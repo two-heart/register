@@ -9,8 +9,8 @@ namespace LAS_Interface
     {
         public MainWindow ()
         {
+            DataContext = new MainViewModel ();
             InitializeComponent ();
-            DataContext = new MainViewModel();
         }
     }
 }

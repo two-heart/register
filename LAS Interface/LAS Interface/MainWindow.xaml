@@ -7,7 +7,60 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        <DataGrid AutoGenerateColumns="True"
-                  ItemsSource="{Binding }"/>
+        <TabControl x:Name="TabControl">
+            <TabItem Header="Register">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <ListView x:Name="ListView" 
+                  ItemsSource="{Binding ListItems}"
+                  Grid.Column="0"/>
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto" 
+                                   Grid.Column="1" >
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Label Content="Monday"
+                               Grid.Row="0"/>
+                        <DataGrid AutoGenerateColumns="True"
+                                  Grid.Row="1"
+                                  ItemsSource="{Binding DataObjectsMonday}"/>
+                        <Label Content ="Tuesday"
+                               Grid.Row="2" />
+                        <DataGrid AutoGenerateColumns="True"
+                                  Grid.Row="3"
+                                  ItemsSource="{Binding DataObjectsTuesday}"/>
+                        <Label Content ="Wednesday"
+                               Grid.Row="4" />
+                        <DataGrid AutoGenerateColumns="True"
+                                  Grid.Row="5"
+                                  ItemsSource="{Binding DataObjectsWednesday}"/>
+                        <Label Content ="Thursday"
+                               Grid.Row="6" />
+                        <DataGrid AutoGenerateColumns="True"
+                                  Grid.Row="7"
+                                  ItemsSource="{Binding DataObjectsThursday}"/>
+                        <Label Content ="Friday"
+                               Grid.Row="8" />
+                        <DataGrid AutoGenerateColumns="True"
+                                  Grid.Row="9"
+                                  ItemsSource="{Binding DataObjectsFriday}"/>
+                        </Grid>
+                    </ScrollViewer>
+                </Grid>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>
