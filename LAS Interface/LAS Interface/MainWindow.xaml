@@ -15,48 +15,49 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <ListView x:Name="ListView" 
-                  ItemsSource="{Binding ListItems}"
-                  Grid.Column="0"/>
+                  ItemsSource="{Binding ListItems, UpdateSourceTrigger=PropertyChanged}"
+                  Grid.Column="0"
+                              SelectedIndex="{Binding CurrentWeek, UpdateSourceTrigger=PropertyChanged}"/>
                     <ScrollViewer HorizontalScrollBarVisibility="Auto" 
                                    Grid.Column="1" >
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <Label Content="Monday"
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Label Content="Monday"
                                Grid.Row="0"/>
-                        <DataGrid AutoGenerateColumns="True"
+                            <DataGrid AutoGenerateColumns="True"
                                   Grid.Row="1"
-                                  ItemsSource="{Binding DataObjectsMonday}"/>
-                        <Label Content ="Tuesday"
+                                  ItemsSource="{Binding DataObjectsMonday, UpdateSourceTrigger=PropertyChanged}"/>
+                            <Label Content ="Tuesday"
                                Grid.Row="2" />
-                        <DataGrid AutoGenerateColumns="True"
+                            <DataGrid AutoGenerateColumns="True"
                                   Grid.Row="3"
-                                  ItemsSource="{Binding DataObjectsTuesday}"/>
-                        <Label Content ="Wednesday"
+                                  ItemsSource="{Binding DataObjectsTuesday, UpdateSourceTrigger=PropertyChanged}"/>
+                            <Label Content ="Wednesday"
                                Grid.Row="4" />
-                        <DataGrid AutoGenerateColumns="True"
+                            <DataGrid AutoGenerateColumns="True"
                                   Grid.Row="5"
-                                  ItemsSource="{Binding DataObjectsWednesday}"/>
-                        <Label Content ="Thursday"
+                                  ItemsSource="{Binding DataObjectsWednesday, UpdateSourceTrigger=PropertyChanged}"/>
+                            <Label Content ="Thursday"
                                Grid.Row="6" />
-                        <DataGrid AutoGenerateColumns="True"
+                            <DataGrid AutoGenerateColumns="True"
                                   Grid.Row="7"
-                                  ItemsSource="{Binding DataObjectsThursday}"/>
-                        <Label Content ="Friday"
+                                  ItemsSource="{Binding DataObjectsThursday, UpdateSourceTrigger=PropertyChanged}"/>
+                            <Label Content ="Friday"
                                Grid.Row="8" />
-                        <DataGrid AutoGenerateColumns="True"
+                            <DataGrid AutoGenerateColumns="True"
                                   Grid.Row="9"
-                                  ItemsSource="{Binding DataObjectsFriday}"/>
+                                  ItemsSource="{Binding DataObjectsFriday, UpdateSourceTrigger=PropertyChanged}"/>
                         </Grid>
                     </ScrollViewer>
                 </Grid>

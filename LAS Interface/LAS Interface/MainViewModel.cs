@@ -6,35 +6,27 @@ using LAS_Interface.Util;
 
 namespace LAS_Interface
 {
-    public class MainViewModel :INotifyPropertyChanged
+    public class MainViewModel : INotifyPropertyChanged
     {
-        private List<DataObject> _dataObjectsMonday;
-        private List<DataObject> _dataObjectsTuesday;
-        private List<DataObject> _dataObjectsWedenesday;
-        private List<DataObject> _dataObjectsThursday;
-        private List<DataObject> _dataObjectsFriday;
-        private List<string> _listItems;
+        public WeekDataObjects DataObjectsWeek
+        {
+            get { return AllDataObjects[CurrentWeek]; } 
+            set { AllDataObjects[CurrentWeek] = value; }
+        }
 
+        private List<string> _listItems;
+        private int _currentWeek;
         public int EntriesPerDay = 8;
 
-        public List<List<DataObject>> AllDataObjects;
+        public List<WeekDataObjects> AllDataObjects;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
 
-        public MainViewModel()
+        public MainViewModel ()
         {
-            ListItems = GeneralUtil.GetWeekList(DateTime.Now.Year);
-            InitializeDataObjects();
-        }
-
-        public void InitializeDataObjects()
-        {
-            DataObjectsMonday = DataObjectsUtil.GetnEmptyDataObjects(EntriesPerDay);
-            DataObjectsTuesday = DataObjectsUtil.GetnEmptyDataObjects (EntriesPerDay);
-            DataObjectsWednesday = DataObjectsUtil.GetnEmptyDataObjects (EntriesPerDay);
-            DataObjectsThursday = DataObjectsUtil.GetnEmptyDataObjects (EntriesPerDay);
-            DataObjectsFriday = DataObjectsUtil.GetnEmptyDataObjects (EntriesPerDay);
+            ListItems = GeneralUtil.GetWeekList (DateTime.Now.Year);
+            AllDataObjects = DataObjectsUtil.GetEmptyAllDataObjects(EntriesPerDay, GeneralUtil.WeeksPerYear);
         }
 
 
@@ -42,12 +34,12 @@ namespace LAS_Interface
         {
             get
             {
-                return _dataObjectsMonday;
+                return DataObjectsWeek.Monday;
             }
             set
             {
-                _dataObjectsMonday = value;
-                OnPropertyChanged(nameof(DataObjectsMonday));
+                DataObjectsWeek.Monday = value;
+                OnPropertyChanged (nameof (DataObjectsMonday));
             }
         }
 
@@ -55,12 +47,12 @@ namespace LAS_Interface
         {
             get
             {
-                return _dataObjectsTuesday;
+                return DataObjectsWeek.Tuesday;
             }
             set
             {
-                _dataObjectsTuesday = value;
-                OnPropertyChanged(nameof(DataObjectsTuesday));
+                DataObjectsWeek.Tuesday = value;
+                OnPropertyChanged (nameof (DataObjectsTuesday));
             }
         }
 
@@ -68,12 +60,12 @@ namespace LAS_Interface
         {
             get
             {
-                return _dataObjectsWedenesday;
+                return DataObjectsWeek.Wednesday;
             }
             set
             {
-                _dataObjectsWedenesday = value;
-                OnPropertyChanged(nameof(DataObjectsWednesday));
+                DataObjectsWeek.Wednesday = value;
+                OnPropertyChanged (nameof (DataObjectsWednesday));
             }
         }
 
@@ -81,12 +73,12 @@ namespace LAS_Interface
         {
             get
             {
-                return _dataObjectsThursday;
+                return DataObjectsWeek.Thursday;
             }
             set
             {
-                _dataObjectsThursday = value;
-                OnPropertyChanged(nameof(DataObjectsThursday));
+                DataObjectsWeek.Thursday = value;
+                OnPropertyChanged (nameof (DataObjectsThursday));
             }
         }
 
@@ -94,25 +86,46 @@ namespace LAS_Interface
         {
             get
             {
-                return _dataObjectsFriday;
+                return DataObjectsWeek.Friday;
             }
             set
             {
-                _dataObjectsFriday = value;
-                OnPropertyChanged(nameof(DataObjectsFriday));
+                DataObjectsWeek.Friday = value;
+                OnPropertyChanged (nameof (DataObjectsFriday));
             }
         }
 
         public List<string> ListItems
         {
-            get {return _listItems;}
+            get { return _listItems; }
             set
             {
                 _listItems = value;
-                OnPropertyChanged(nameof(ListItems));
+                OnPropertyChanged (nameof (ListItems));
             }
         }
-        
+
+        public int CurrentWeek
+        {
+            get { return _currentWeek; }
+            set
+            {
+                _currentWeek = value;
+                OnPropertyChanged(nameof(CurrentWeek));
+                PropertyChangedWeek();
+            }
+        }
+
+        public void PropertyChangedWeek()
+        {
+            OnPropertyChanged(nameof(DataObjectsWeek));
+            OnPropertyChanged(nameof(DataObjectsMonday));
+            OnPropertyChanged(nameof(DataObjectsTuesday));
+            OnPropertyChanged(nameof(DataObjectsWednesday));
+            OnPropertyChanged(nameof(DataObjectsThursday));
+            OnPropertyChanged(nameof(DataObjectsFriday));
+        }
+
         protected void OnPropertyChanged (string name)
         {
             PropertyChanged?.Invoke (this, new PropertyChangedEventArgs (name));

@@ -56,6 +56,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Types\DataObject.cs" />
+    <Compile Include="Types\WeekDataObjects.cs" />
     <Compile Include="Util\DataObjectsUtil.cs" />
     <Compile Include="Util\GeneralUtil.cs" />
     <Page Include="MainWindow.xaml">

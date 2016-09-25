@@ -15,5 +15,26 @@ namespace LAS_Interface.Util
             }
             return fin;
         }
+
+        public static WeekDataObjects GetEmptyWeekDataObjects (int entriesPerDay)
+        {
+            return new WeekDataObjects (
+                GetnEmptyDataObjects (entriesPerDay),
+                GetnEmptyDataObjects (entriesPerDay),
+                GetnEmptyDataObjects (entriesPerDay),
+                GetnEmptyDataObjects (entriesPerDay),
+                GetnEmptyDataObjects (entriesPerDay));
+        }
+
+        public static List<WeekDataObjects> GetEmptyAllDataObjects(int entriesPerDay, int count)
+        {
+            var that = new List<WeekDataObjects>();
+            while (count > 0)
+            {
+                that.Add(GetEmptyWeekDataObjects(entriesPerDay));
+                count--;
+            }
+            return that;
+        }
     }
 }
