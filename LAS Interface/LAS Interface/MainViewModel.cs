@@ -17,17 +17,16 @@ namespace LAS_Interface
         private string _selectedClass;
         private List<string> _classItems;
 
-
         public List<ClassDataObjects> AllDataObjects;
 
         public ClassDataObjects AllDataObjectsOfCurrentClass
         {
             get
-            { return AllDataObjects.FirstOrDefault(classDataObjectse => classDataObjectse.Class.Equals(SelectedClass)); }
+            { return AllDataObjects.FirstOrDefault (classDataObjectse => classDataObjectse.Class.Equals (SelectedClass)); }
             set
             {
                 for (var i = 0; i < AllDataObjects.Count; i++)
-                    if (AllDataObjects[i].Class == SelectedClass)
+                    if (AllDataObjects[i].Class.Equals(SelectedClass))
                         AllDataObjects[i] = value;
             }
         }
@@ -36,9 +35,22 @@ namespace LAS_Interface
             get { return AllDataObjectsOfCurrentClass.WeekDataObjects[CurrentWeek]; }
             set
             {
-                AllDataObjectsOfCurrentClass.WeekDataObjects[CurrentWeek] = value; 
+                AllDataObjectsOfCurrentClass.WeekDataObjects[CurrentWeek] = value;
             }
         }
+
+        public TimeTable TimeTableOfCurrentClass
+        {
+            get { return AllTimeTables.FirstOrDefault(timeTable => timeTable.Class.Equals(SelectedClass)); }
+            set
+            {
+                for (var i = 0; i < AllTimeTables.Count; i++)
+                    if (AllTimeTables[i].Class.Equals(SelectedClass))
+                        AllTimeTables[i] = value;;
+            }
+        }
+
+        public List<TimeTable> AllTimeTables;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -47,7 +59,8 @@ namespace LAS_Interface
         {
             ClassItems = GeneralUtil.GetClasses ();
             ListItems = GeneralUtil.GetWeekList (DateTime.Now.Year);
-            AllDataObjects = DataObjectsUtil.GenerateAllEmptyClassDataObjectses(ClassItems);
+            AllDataObjects = DataObjectsUtil.GenerateAllEmptyClassDataObjectses (ClassItems);
+            AllTimeTables = TimeTableUtil.GetAllEmptyTimeTables(ClassItems);
         }
 
         #region BoundVariables
@@ -147,7 +160,8 @@ namespace LAS_Interface
             {
                 _selectedClass = value;
                 OnPropertyChanged (nameof (SelectedClass));
-                PropertyChangedWeek();
+                PropertyChangedWeek ();
+                OnPropertyChanged(nameof(TimeTableForView));
             }
         }
 
@@ -158,6 +172,16 @@ namespace LAS_Interface
             {
                 _classItems = value;
                 OnPropertyChanged (nameof (ClassItems));
+            }
+        }
+
+        public List<TimeTableRow> TimeTableForView
+        {
+            get { return TimeTableOfCurrentClass.TimeTableRows; }
+            set
+            {
+                TimeTableOfCurrentClass.TimeTableRows = value;
+                OnPropertyChanged (nameof (TimeTableForView));
             }
         }
         #endregion

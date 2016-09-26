@@ -12,3 +12,4 @@ C:\Users\Timo\Source\Repos\register\LAS Interface\LAS Interface\obj\Debug\LAS In
 C:\Users\Timo\Source\Repos\register\LAS Interface\LAS Interface\obj\Debug\LAS Interface.exe
 C:\Users\Timo\Source\Repos\register\LAS Interface\LAS Interface\obj\Debug\LAS Interface.pdb
 C:\Users\Timo\Source\Repos\register\LAS Interface\LAS Interface\obj\Debug\LAS Interface_MarkupCompile.lref
+C:\Users\Timo\Source\Repos\register\LAS Interface\LAS Interface\obj\Debug\LAS Interface.csprojResolveAssemblyReference.cache

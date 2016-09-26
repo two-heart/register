@@ -21,7 +21,7 @@
         </Grid>
         <TabControl x:Name="TabControl"
                     Grid.Row="1">
-            <TabItem Header="Register">
+            <TabItem Header="Register" Height="22" VerticalAlignment="Top">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="200"/>
@@ -74,6 +74,10 @@
                         </Grid>
                     </ScrollViewer>
                 </Grid>
+            </TabItem>
+            <TabItem Header="TimeTable">
+                <DataGrid AutoGenerateColumns="True"
+                          ItemsSource="{Binding TimeTableForView, UpdateSourceTrigger=PropertyChanged}"/>
             </TabItem>
         </TabControl>
     </Grid>
