@@ -5,9 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LAS_Interface"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow">
     <Grid>
-        <TabControl x:Name="TabControl">
+        <Grid.RowDefinitions >
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Row="0"
+              Height="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <ComboBox ItemsSource="{Binding ClassItems}"
+                     SelectedItem="{Binding SelectedClass}"/>
+        </Grid>
+        <TabControl x:Name="TabControl"
+                    Grid.Row="1">
             <TabItem Header="Register">
                 <Grid>
                     <Grid.ColumnDefinitions>
