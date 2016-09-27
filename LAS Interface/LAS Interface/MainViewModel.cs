@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
+using LAS_Interface.Automation;
+using LAS_Interface.ForeignStuff;
 using LAS_Interface.PublicStuff;
 using LAS_Interface.Types;
 using LAS_Interface.Util;
@@ -17,25 +19,26 @@ namespace LAS_Interface
         private string _selectedClass;
         private List<string> _classItems;
 
-        public List<ClassDataObjects> AllDataObjects;
+        public List<ClassRegister> AllRegisters; //Those two files should be saved/loaded to/from the Data Source
+        public List<TimeTable> AllTimeTables;
 
-        public ClassDataObjects AllDataObjectsOfCurrentClass
+        public ClassRegister RegisterOfCurrentClass
         {
             get
-            { return AllDataObjects.FirstOrDefault (classDataObjectse => classDataObjectse.Class.Equals (SelectedClass)); }
+            { return AllRegisters.FirstOrDefault (classDataObjectse => classDataObjectse.Class.Equals (SelectedClass)); }
             set
             {
-                for (var i = 0; i < AllDataObjects.Count; i++)
-                    if (AllDataObjects[i].Class.Equals(SelectedClass))
-                        AllDataObjects[i] = value;
+                for (var i = 0; i < AllRegisters.Count; i++)
+                    if (AllRegisters[i].Class.Equals(SelectedClass))
+                        AllRegisters[i] = value;
             }
         }
-        public WeekDataObjects DataObjectsWeek
+        public WeekDataObjects RegisterOfCurrentWeek
         {
-            get { return AllDataObjectsOfCurrentClass.WeekDataObjects[CurrentWeek]; }
+            get { return RegisterOfCurrentClass.WeekDataObjects[CurrentWeek]; }
             set
             {
-                AllDataObjectsOfCurrentClass.WeekDataObjects[CurrentWeek] = value;
+                RegisterOfCurrentClass.WeekDataObjects[CurrentWeek] = value;
             }
         }
 
@@ -50,8 +53,6 @@ namespace LAS_Interface
             }
         }
 
-        public List<TimeTable> AllTimeTables;
-
         public event PropertyChangedEventHandler PropertyChanged;
 
 
@@ -59,73 +60,80 @@ namespace LAS_Interface
         {
             ClassItems = GeneralUtil.GetClasses ();
             ListItems = GeneralUtil.GetWeekList (DateTime.Now.Year);
-            AllDataObjects = DataObjectsUtil.GenerateAllEmptyClassDataObjectses (ClassItems);
+            AllRegisters = DataObjectsUtil.GenerateAllEmptyClassDataObjectses (ClassItems);
             AllTimeTables = TimeTableUtil.GetAllEmptyTimeTables(ClassItems);
+            FillRegisterButtonClickCommand = new DelegateCommand(FillRegisterButtonClick);
+        }
+
+        public void FillRegisterButtonClick(object param)
+        {
+            AllRegisters = AutoFill.GetFilledRegissters(AllRegisters, AllTimeTables);
+            PropertyChangedClass();
         }
 
         #region BoundVariables
-        public List<DataObject> DataObjectsMonday
+        public List<DataObject> RegisterDataObjectsMonday
         {
             get
             {
-                return DataObjectsWeek.Monday;
+                return RegisterOfCurrentWeek.Monday;
             }
             set
             {
-                DataObjectsWeek.Monday = value;
-                OnPropertyChanged (nameof (DataObjectsMonday));
+                RegisterOfCurrentWeek.Monday = value;
+                OnPropertyChanged (nameof (RegisterDataObjectsMonday));
             }
         }
 
-        public List<DataObject> DataObjectsTuesday
+        public List<DataObject> RegisterDataObjectsTuesday
         {
             get
             {
-                return DataObjectsWeek.Tuesday;
+                return RegisterOfCurrentWeek.Tuesday;
             }
             set
             {
-                DataObjectsWeek.Tuesday = value;
-                OnPropertyChanged (nameof (DataObjectsTuesday));
+                RegisterOfCurrentWeek.Tuesday = value;
+                OnPropertyChanged (nameof (RegisterDataObjectsTuesday));
             }
         }
 
-        public List<DataObject> DataObjectsWednesday
+        public List<DataObject> RegisterDataObjectsWednesday
         {
             get
             {
-                return DataObjectsWeek.Wednesday;
+                return RegisterOfCurrentWeek.Wednesday;
             }
             set
             {
-                DataObjectsWeek.Wednesday = value;
-                OnPropertyChanged (nameof (DataObjectsWednesday));
+                RegisterOfCurrentWeek.Wednesday = value;
+                OnPropertyChanged (nameof (RegisterDataObjectsWednesday));
             }
         }
 
-        public List<DataObject> DataObjectsThursday
+        public List<DataObject> RegisterDataObjectsThursday
         {
             get
             {
-                return DataObjectsWeek.Thursday;
+                return RegisterOfCurrentWeek.Thursday;
             }
             set
             {
-                DataObjectsWeek.Thursday = value;
-                OnPropertyChanged (nameof (DataObjectsThursday));
+                RegisterOfCurrentWeek.Thursday = value;
+                OnPropertyChanged (nameof (RegisterDataObjectsThursday));
             }
         }
 
-        public List<DataObject> DataObjectsFriday
+        public List<DataObject> RegisterDataObjectsFriday
         {
             get
             {
-                return DataObjectsWeek.Friday;
+                return RegisterOfCurrentWeek.Friday;
             }
             set
             {
-                DataObjectsWeek.Friday = value;
-                OnPropertyChanged (nameof (DataObjectsFriday));
+                RegisterOfCurrentWeek.Friday = value;
+                OnPropertyChanged (nameof (RegisterDataObjectsFriday));
             }
         }
 
@@ -146,7 +154,7 @@ namespace LAS_Interface
             {
                 _currentWeek = value;
                 OnPropertyChanged (nameof (CurrentWeek));
-                PropertyChangedWeek ();
+                PropertyChangedClass ();
             }
         }
 
@@ -159,9 +167,7 @@ namespace LAS_Interface
             set
             {
                 _selectedClass = value;
-                OnPropertyChanged (nameof (SelectedClass));
-                PropertyChangedWeek ();
-                OnPropertyChanged(nameof(TimeTableForView));
+                PropertyChangedClass ();
             }
         }
 
@@ -187,16 +193,20 @@ namespace LAS_Interface
         #endregion
 
         #region Commands
+
+        public ICommand FillRegisterButtonClickCommand { get; set; }
         #endregion
 
-        public void PropertyChangedWeek ()
+        public void PropertyChangedClass ()
         {
-            OnPropertyChanged (nameof (DataObjectsWeek));
-            OnPropertyChanged (nameof (DataObjectsMonday));
-            OnPropertyChanged (nameof (DataObjectsTuesday));
-            OnPropertyChanged (nameof (DataObjectsWednesday));
-            OnPropertyChanged (nameof (DataObjectsThursday));
-            OnPropertyChanged (nameof (DataObjectsFriday));
+            OnPropertyChanged (nameof (SelectedClass));
+            OnPropertyChanged (nameof (RegisterOfCurrentWeek));
+            OnPropertyChanged (nameof (RegisterDataObjectsMonday));
+            OnPropertyChanged (nameof (RegisterDataObjectsTuesday));
+            OnPropertyChanged (nameof (RegisterDataObjectsWednesday));
+            OnPropertyChanged (nameof (RegisterDataObjectsThursday));
+            OnPropertyChanged (nameof (RegisterDataObjectsFriday));
+            OnPropertyChanged (nameof (TimeTableForView));
         }
 
         protected void OnPropertyChanged (string name)

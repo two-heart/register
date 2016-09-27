@@ -2,12 +2,12 @@
 
 namespace LAS_Interface.Types
 {
-    public class ClassDataObjects
+    public class ClassRegister
     {
         public List<WeekDataObjects> WeekDataObjects;
         public string Class;
 
-        public ClassDataObjects(List<WeekDataObjects> weekDataObjects, string cclass)
+        public ClassRegister(List<WeekDataObjects> weekDataObjects, string cclass)
         {
             WeekDataObjects = weekDataObjects;
             Class = cclass;

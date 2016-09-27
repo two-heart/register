@@ -14,10 +14,15 @@
         <Grid Row="0"
               Height="20">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="53"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <ComboBox ItemsSource="{Binding ClassItems}"
-                     SelectedItem="{Binding SelectedClass}"/>
+                     SelectedItem="{Binding SelectedClass}" Width="50"
+                      Grid.Column="0"/>
+            <Button Command="{Binding FillRegisterButtonClickCommand}"
+                    Content="Auto-Fill Register"
+                    Grid.Column="1"/>
         </Grid>
         <TabControl x:Name="TabControl"
                     Grid.Row="1">
@@ -50,27 +55,27 @@
                                Grid.Row="0"/>
                             <DataGrid AutoGenerateColumns="True"
                                   Grid.Row="1"
-                                  ItemsSource="{Binding DataObjectsMonday, UpdateSourceTrigger=PropertyChanged}"/>
+                                  ItemsSource="{Binding RegisterDataObjectsMonday, UpdateSourceTrigger=PropertyChanged}"/>
                             <Label Content ="Tuesday"
                                Grid.Row="2" />
                             <DataGrid AutoGenerateColumns="True"
                                   Grid.Row="3"
-                                  ItemsSource="{Binding DataObjectsTuesday, UpdateSourceTrigger=PropertyChanged}"/>
+                                  ItemsSource="{Binding RegisterDataObjectsTuesday, UpdateSourceTrigger=PropertyChanged}"/>
                             <Label Content ="Wednesday"
                                Grid.Row="4" />
                             <DataGrid AutoGenerateColumns="True"
                                   Grid.Row="5"
-                                  ItemsSource="{Binding DataObjectsWednesday, UpdateSourceTrigger=PropertyChanged}"/>
+                                  ItemsSource="{Binding RegisterDataObjectsWednesday, UpdateSourceTrigger=PropertyChanged}"/>
                             <Label Content ="Thursday"
                                Grid.Row="6" />
                             <DataGrid AutoGenerateColumns="True"
                                   Grid.Row="7"
-                                  ItemsSource="{Binding DataObjectsThursday, UpdateSourceTrigger=PropertyChanged}"/>
+                                  ItemsSource="{Binding RegisterDataObjectsThursday, UpdateSourceTrigger=PropertyChanged}"/>
                             <Label Content ="Friday"
                                Grid.Row="8" />
                             <DataGrid AutoGenerateColumns="True"
                                   Grid.Row="9"
-                                  ItemsSource="{Binding DataObjectsFriday, UpdateSourceTrigger=PropertyChanged}"/>
+                                  ItemsSource="{Binding RegisterDataObjectsFriday, UpdateSourceTrigger=PropertyChanged}"/>
                         </Grid>
                     </ScrollViewer>
                 </Grid>

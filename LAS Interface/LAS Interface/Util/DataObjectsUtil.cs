@@ -39,6 +39,6 @@ namespace LAS_Interface.Util
             return that;
         }
 
-        public static List<ClassDataObjects> GenerateAllEmptyClassDataObjectses (List<string> classes) => classes.Select(c => new ClassDataObjects(GetEmptyAllDataObjects(GeneralPublicStuff.EntriesPerDay, GeneralPublicStuff.WeeksPerYear), c)).ToList();
+        public static List<ClassRegister> GenerateAllEmptyClassDataObjectses (List<string> classes) => classes.Select(c => new ClassRegister(GetEmptyAllDataObjects(GeneralPublicStuff.EntriesPerDay, GeneralPublicStuff.WeeksPerYear), c)).ToList();
     }
 }

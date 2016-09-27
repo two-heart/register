@@ -55,9 +55,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Automation\AutoFill.cs" />
     <Compile Include="ForeignStuff\DelegateCommand.cs" />
     <Compile Include="PublicStuff\GeneralPublicStuff.cs" />
-    <Compile Include="Types\ClassDataObjects.cs" />
+    <Compile Include="Types\ClassRegister.cs" />
     <Compile Include="Types\DataObject.cs" />
     <Compile Include="Types\TimeTable.cs" />
     <Compile Include="Types\TimeTableRow.cs" />
