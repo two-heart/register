@@ -26,12 +26,28 @@ namespace LAS_Interface
         private List<Teacher> _teachers;
         private List<Student> _students;
 
-        public List<ClassRegister> AllRegisters
+        #region External Variables -> Those four files should be saved/loaded to/from the Data Source
+        public List<ClassRegister> AllRegisters { get; set; }
+        public List<TimeTable> AllTimeTables { get; set; }
+        public List<Teacher> Teachers
         {
-            get;
-            set;
-        } //Those two files should be saved/loaded to/from the Data Source
-        public List<TimeTable> AllTimeTables;
+            get { return _teachers; }
+            set
+            {
+                _teachers = value;
+                OnPropertyChanged(nameof(TeachersViews));
+            }
+        }
+        public List<Student> Students
+        {
+            get { return _students; }
+            set
+            {
+                _students = value;
+                OnPropertyChanged(nameof(StudentsViews));
+            }
+        }
+#endregion
 
         public ClassRegister RegisterOfCurrentClass
         {
@@ -193,24 +209,14 @@ namespace LAS_Interface
             }
         }
 
-        public List<Teacher> Teachers
-        {
-            get { return _teachers; }
-            set
-            {
-                _teachers = value;
-                OnPropertyChanged(nameof(TeachersViews));
-            }
-        }
-
         public List<TeachersView> TeachersViews
         {
             get
             {
                 return
-                    Teachers.SelectMany (
-                            teacher => teacher.TeachersViews.Where (view => view.Class.Equals (SelectedClass)).ToList ())
-                        .ToList ();
+                    Teachers.SelectMany(
+                            teacher => teacher.TeachersViews.Where(view => view.Class.Equals(SelectedClass)).ToList())
+                        .ToList();
             }
             set //Don't add TeachersViews - Always add Teachers!
             {
@@ -219,22 +225,13 @@ namespace LAS_Interface
                     Teachers[i].Name = value[i].Name;
                     foreach (var t in Teachers[i].TeacherProperties)
                     {
-                        if (!t.Class.Equals(SelectedClass)) continue;
+                        if (!t.Class.Equals(SelectedClass))
+                            continue;
                         t.Subjects = value[i].Subjects.Split(',').ToList();
                         t.ClassTeacher = value[i].ClassTeacher;
                     }
                 }
                 OnPropertyChanged(nameof(TeachersViews));
-            }
-        }
-
-        public List<Student> Students
-        {
-            get { return _students; }
-            set
-            {
-                _students = value;
-                OnPropertyChanged(nameof(StudentsViews));
             }
         }
 
@@ -255,7 +252,7 @@ namespace LAS_Interface
                         Students[i].Name = value[i].Name;
                         Students[i].StudentsView.Name = value[i].Name;
                     }
-                OnPropertyChanged (nameof(StudentsViews));
+                OnPropertyChanged(nameof(StudentsViews));
             }
         }
 
@@ -280,7 +277,7 @@ namespace LAS_Interface
             OnPropertyChanged(nameof(TeachersViews));
             OnPropertyChanged(nameof(StudentsViews));
             OnPropertyChanged(nameof(Students));
-            OnPropertyChanged (nameof (Teachers));
+            OnPropertyChanged(nameof(Teachers));
         }
 
         protected void OnPropertyChanged(string name)
