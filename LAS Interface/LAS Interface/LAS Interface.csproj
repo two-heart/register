@@ -60,6 +60,11 @@
     <Compile Include="PublicStuff\GeneralPublicStuff.cs" />
     <Compile Include="Types\ClassRegister.cs" />
     <Compile Include="Types\DataObject.cs" />
+    <Compile Include="Types\Humans\Students\Student.cs" />
+    <Compile Include="Types\Humans\Students\StudentsView.cs" />
+    <Compile Include="Types\Humans\Teacher\Teacher.cs" />
+    <Compile Include="Types\Humans\Teacher\TeacherPropertiesForSpecificClass.cs" />
+    <Compile Include="Types\Humans\Teacher\TeachersView.cs" />
     <Compile Include="Types\TimeTable.cs" />
     <Compile Include="Types\TimeTableRow.cs" />
     <Compile Include="Types\WeekDataObjects.cs" />

@@ -17,8 +17,8 @@
                 <ColumnDefinition Width="53"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <ComboBox ItemsSource="{Binding ClassItems}"
-                     SelectedItem="{Binding SelectedClass}" Width="50"
+            <ComboBox ItemsSource="{Binding ClassItems, UpdateSourceTrigger=PropertyChanged}"
+                     SelectedItem="{Binding SelectedClass, UpdateSourceTrigger=PropertyChanged}" Width="50"
                       Grid.Column="0"/>
             <Button Command="{Binding FillRegisterButtonClickCommand}"
                     Content="Auto-Fill Register"
@@ -83,6 +83,41 @@
             <TabItem Header="TimeTable">
                 <DataGrid AutoGenerateColumns="True"
                           ItemsSource="{Binding TimeTableForView, UpdateSourceTrigger=PropertyChanged}"/>
+            </TabItem>
+            <TabItem Header="Lists">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="0"
+                               Content="Teacher"/>
+                        <ScrollViewer Grid.Row="1"
+                                      HorizontalScrollBarVisibility="Auto">
+                            <DataGrid ItemsSource="{Binding TeachersViews, UpdateSourceTrigger=PropertyChanged}"
+                                      AutoGenerateColumns="True"
+                                      Name="TeacherDataGrid" AutoGeneratingColumn="TeacherDataGrid_AutoGeneratingColumn"/>
+                        </ScrollViewer>
+                    </Grid>
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="0"
+                               Content="Students"/>
+                        <ScrollViewer Grid.Row="1"
+                                      HorizontalScrollBarVisibility="Auto">
+                            <DataGrid ItemsSource="{Binding StudentsViews, UpdateSourceTrigger=PropertyChanged}"
+                                      AutoGenerateColumns="True"/>
+                        </ScrollViewer>
+                    </Grid>
+                </Grid>
             </TabItem>
         </TabControl>
     </Grid>
