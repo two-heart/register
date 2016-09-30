@@ -25,6 +25,7 @@ namespace LAS_Interface
         private List<string> _classItems;
         private List<Teacher> _teachers;
         private List<Student> _students;
+        private DateTime _selectedDate;
 
         #region External Variables -> Those four files should be saved/loaded to/from the Data Source
         public List<ClassRegister> AllRegisters { get; set; }
@@ -47,14 +48,15 @@ namespace LAS_Interface
                 OnPropertyChanged(nameof(StudentsViews));
             }
         }
-        #endregion
+        #endregion //Don't forget the SelectedDate!
 
         public MainViewModel ()
         {
+            SelectedDate = DateTime.Now;
             ClassItems = GeneralUtil.GetClasses ();
-            ListItems = GeneralUtil.GetWeekList (DateTime.Now.Year);
             AllRegisters = DataObjectsUtil.GenerateAllEmptyClassDataObjectses (ClassItems);
             AllTimeTables = TimeTableUtil.GetAllEmptyTimeTables (ClassItems);
+
             FillRegisterButtonClickCommand = new DelegateCommand (FillRegisterButtonClick);
             Teachers = new List<Teacher>
             {
@@ -253,6 +255,17 @@ namespace LAS_Interface
                         Students[i].StudentsView.Name = value[i].Name;
                     }
                 OnPropertyChanged(nameof(StudentsViews));
+            }
+        }
+
+        public DateTime SelectedDate
+        {
+            get {return _selectedDate;}
+            set
+            {
+                _selectedDate = value;
+                OnPropertyChanged(nameof(SelectedDate));
+                ListItems = TimeUtil.GetWeekList (SelectedDate, GeneralPublicStuff.WeeksPerYear);
             }
         }
 

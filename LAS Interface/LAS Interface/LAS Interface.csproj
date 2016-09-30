@@ -71,6 +71,7 @@
     <Compile Include="Util\DataObjectsUtil.cs" />
     <Compile Include="Util\GeneralUtil.cs" />
     <Compile Include="Util\TimeTableUtil.cs" />
+    <Compile Include="Util\TimeUtil.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

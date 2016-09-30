@@ -12,17 +12,26 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid Row="0"
-              Height="20">
+              Height="30">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="53"/>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
+            <Label Grid.Column="0"
+                   Content="Class:"/>
             <ComboBox ItemsSource="{Binding ClassItems, UpdateSourceTrigger=PropertyChanged}"
                      SelectedItem="{Binding SelectedClass, UpdateSourceTrigger=PropertyChanged}" Width="50"
-                      Grid.Column="0"/>
+                      Grid.Column="1"/>
+            <Label Grid.Column="2"
+                   Content="Start of school year:"/>
+            <DatePicker Grid.Column="3"
+                        SelectedDate="{Binding SelectedDate, UpdateSourceTrigger=PropertyChanged}"/>
             <Button Command="{Binding FillRegisterButtonClickCommand}"
                     Content="Auto-Fill Register"
-                    Grid.Column="1"/>
+                    Grid.Column="4"/>
         </Grid>
         <TabControl x:Name="TabControl"
                     Grid.Row="1">

@@ -8,14 +8,6 @@ namespace LAS_Interface.Util
 {
     public class GeneralUtil
     {
-        public static List<string> GetWeekList(int year) //TODO
-        {
-            var fin = new List<string>();
-            for (var i = 1; i <= GeneralPublicStuff.WeeksPerYear; i++)
-                fin.Add("KW: " + i);
-            return fin;
-        }
-
         public static List<string> GetClasses() //TODO
         {
             var fin = new List<string>();
