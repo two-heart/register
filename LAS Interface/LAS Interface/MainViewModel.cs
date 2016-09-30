@@ -47,7 +47,25 @@ namespace LAS_Interface
                 OnPropertyChanged(nameof(StudentsViews));
             }
         }
-#endregion
+        #endregion
+
+        public MainViewModel ()
+        {
+            ClassItems = GeneralUtil.GetClasses ();
+            ListItems = GeneralUtil.GetWeekList (DateTime.Now.Year);
+            AllRegisters = DataObjectsUtil.GenerateAllEmptyClassDataObjectses (ClassItems);
+            AllTimeTables = TimeTableUtil.GetAllEmptyTimeTables (ClassItems);
+            FillRegisterButtonClickCommand = new DelegateCommand (FillRegisterButtonClick);
+            Teachers = new List<Teacher>
+            {
+                new Teacher("testiLehrer",
+                    new List<TeacherPropertiesForSpecificClass>
+                    {
+                        new TeacherPropertiesForSpecificClass("1a", true, new List<string> {"Mathe"})
+                    })
+            };
+            Students = new List<Student> { new Student ("Timo", "1a") };
+        }
 
         public ClassRegister RegisterOfCurrentClass
         {
@@ -81,28 +99,10 @@ namespace LAS_Interface
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-
-        public MainViewModel()
-        {
-            ClassItems = GeneralUtil.GetClasses();
-            ListItems = GeneralUtil.GetWeekList(DateTime.Now.Year);
-            AllRegisters = DataObjectsUtil.GenerateAllEmptyClassDataObjectses(ClassItems);
-            AllTimeTables = TimeTableUtil.GetAllEmptyTimeTables(ClassItems);
-            FillRegisterButtonClickCommand = new DelegateCommand(FillRegisterButtonClick);
-            Teachers = new List<Teacher>
-            {
-                new Teacher("testiLehrer",
-                    new List<TeacherPropertiesForSpecificClass>
-                    {
-                        new TeacherPropertiesForSpecificClass("1a", true, new List<string> {"Mathe"})
-                    })
-            };
-            Students = new List<Student> {new Student("Timo", "1a")};
-        }
-
+        
         public void FillRegisterButtonClick(object param)
         {
-            AllRegisters = AutoFill.GetFilledRegissters(AllRegisters, AllTimeTables);
+            AllRegisters = AutoFill.GetFilledRegisters(AllRegisters, AllTimeTables, Teachers);
             PropertyChangedClass();
         }
 
