@@ -18,10 +18,7 @@ namespace LAS_Interface.Util
         {
             var fin = new List<string>();
             if (beginning.DayOfWeek != DayOfWeek.Monday)
-            {
                 fin.Add(beginning.ToShortDateString() + "-" + (beginning = GetNextMonday(beginning)).ToShortDateString());
-                fin[0] += beginning.ToShortDateString();
-            }
             while (weekCount > 0)
             {
                 fin.Add(beginning.ToShortDateString() + "-" + (beginning = beginning.AddDays(7)).ToShortDateString());

@@ -30,7 +30,7 @@ namespace LAS_Interface.UI
         private List<Teacher> _teachers;
 
         public MainViewModel(MainWindow mw)
-            //TODO Handle Runtime Changed Date, Add classes/Remove Classes
+            //TODO Handle Runtime Changed Date
         {
             _mainWindow = mw;
 
