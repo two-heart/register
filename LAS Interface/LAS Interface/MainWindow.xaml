@@ -110,7 +110,20 @@
                                       HorizontalScrollBarVisibility="Auto">
                             <DataGrid ItemsSource="{Binding TeachersViews, UpdateSourceTrigger=PropertyChanged}"
                                       AutoGenerateColumns="True"
-                                      Name="TeacherDataGrid" AutoGeneratingColumn="TeacherDataGrid_AutoGeneratingColumn"/>
+                                      Name="TeacherDataGrid" 
+                                      AutoGeneratingColumn="TeacherDataGrid_AutoGeneratingColumn"
+                                      MouseRightButtonUp="TeacherDataGrid_OnMouseRightButtonUp"
+                                      SelectedItem="{Binding SelectedTeacher, UpdateSourceTrigger=PropertyChanged}">
+                                <DataGrid.ContextMenu>
+                                    <ContextMenu IsOpen="{Binding TeachersContextMenuOpened, UpdateSourceTrigger=PropertyChanged}">
+                                        <MenuItem Command="{Binding AddTeacherCommand}"
+                                                  Header="Add Teacher"/>
+                                        <MenuItem Header="Delete Teacher"
+                                                  Visibility="{Binding ContextMenuDeleteTeacherItemVisibility, UpdateSourceTrigger=PropertyChanged}"
+                                                  Command="{Binding DeleteTeacherCommand}"/>
+                                    </ContextMenu>
+                                </DataGrid.ContextMenu>
+                            </DataGrid>
                         </ScrollViewer>
                     </Grid>
                     <Grid Grid.Column="1">
@@ -123,7 +136,20 @@
                         <ScrollViewer Grid.Row="1"
                                       HorizontalScrollBarVisibility="Auto">
                             <DataGrid ItemsSource="{Binding StudentsViews, UpdateSourceTrigger=PropertyChanged}"
-                                      AutoGenerateColumns="True"/>
+                                      AutoGenerateColumns="True"
+                                      Name="StudentsDataGrid"
+                                      MouseRightButtonUp="StudentsDataGrid_OnMouseRightButtonUp"
+                                      SelectedItem="{Binding SelectedStudent, UpdateSourceTrigger=PropertyChanged}">
+                                <DataGrid.ContextMenu>
+                                    <ContextMenu IsOpen="{Binding StudentsContextMenuOpened, UpdateSourceTrigger=PropertyChanged}">
+                                        <MenuItem Command="{Binding AddStudentCommand}"
+                                                  Header="Add Student"/>
+                                        <MenuItem Header ="Delete Student"
+                                                  Command="{Binding DeleteStudentCommand}"
+                                                  Visibility="{Binding ContextMenuDeleteStudentItemVisibility, UpdateSourceTrigger=PropertyChanged}"/>
+                                    </ContextMenu>
+                                </DataGrid.ContextMenu>
+                            </DataGrid>
                         </ScrollViewer>
                     </Grid>
                 </Grid>

@@ -26,31 +26,44 @@ namespace LAS_Interface
         private List<Teacher> _teachers;
         private List<Student> _students;
         private DateTime _selectedDate;
+        private StudentsView _selectedStudent;
+        private TeachersView _selectedTeacher;
+        private bool _studentsContextMenuOpened;
+        private bool _teachersContextMenuOpened;
 
         #region External Variables -> Those four files should be saved/loaded to/from the Data Source
+
         public List<ClassRegister> AllRegisters { get; set; }
         public List<TimeTable> AllTimeTables { get; set; }
+
         public List<Teacher> Teachers
         {
             get { return _teachers; }
             set
             {
+                if (value != null && value.Count > 0)
+                    foreach (var teacher in value.ToList())
+                        if (teacher.TeacherProperties?.Count <= 0)
+                            value.Remove (teacher);
                 _teachers = value;
-                OnPropertyChanged(nameof(TeachersViews));
+                OnPropertyChanged (nameof (TeachersViews));
             }
         }
+
         public List<Student> Students
         {
             get { return _students; }
             set
             {
                 _students = value;
-                OnPropertyChanged(nameof(StudentsViews));
+                OnPropertyChanged (nameof (StudentsViews));
             }
         }
+
         #endregion //Don't forget the SelectedDate!
 
         public MainViewModel ()
+        //TODO Handle Runtime Changed Date, Add Persons, Remove Persons, Add classes/Remove Classes
         {
             SelectedDate = DateTime.Now;
             ClassItems = GeneralUtil.GetClasses ();
@@ -58,27 +71,26 @@ namespace LAS_Interface
             AllTimeTables = TimeTableUtil.GetAllEmptyTimeTables (ClassItems);
 
             FillRegisterButtonClickCommand = new DelegateCommand (FillRegisterButtonClick);
-            Teachers = new List<Teacher>
-            {
-                new Teacher("testiLehrer",
-                    new List<TeacherPropertiesForSpecificClass>
-                    {
-                        new TeacherPropertiesForSpecificClass("1a", true, new List<string> {"Mathe"})
-                    })
-            };
-            Students = new List<Student> { new Student ("Timo", "1a") };
+            AddStudentCommand = new DelegateCommand (AddStudent);
+            AddTeacherCommand = new DelegateCommand (AddTeacher);
+            DeleteStudentCommand = new DelegateCommand (DeleteStudent);
+            DeleteTeacherCommand = new DelegateCommand (DeleteTeacher);
+
+            Teachers = new List<Teacher> ();
+            Students = new List<Student> ();
+            SelectedClass = ClassItems.FirstOrDefault ();
         }
 
         public ClassRegister RegisterOfCurrentClass
         {
             get
             {
-                return AllRegisters.FirstOrDefault(classDataObjectse => classDataObjectse.Class.Equals(SelectedClass));
+                return AllRegisters.FirstOrDefault (classDataObjectse => classDataObjectse.Class.Equals (SelectedClass));
             }
             set
             {
                 for (var i = 0; i < AllRegisters.Count; i++)
-                    if (AllRegisters[i].Class.Equals(SelectedClass))
+                    if (AllRegisters[i].Class.Equals (SelectedClass))
                         AllRegisters[i] = value;
             }
         }
@@ -91,21 +103,57 @@ namespace LAS_Interface
 
         public TimeTable TimeTableOfCurrentClass
         {
-            get { return AllTimeTables.FirstOrDefault(timeTable => timeTable.Class.Equals(SelectedClass)); }
+            get { return AllTimeTables.FirstOrDefault (timeTable => timeTable.Class.Equals (SelectedClass)); }
             set
             {
                 for (var i = 0; i < AllTimeTables.Count; i++)
-                    if (AllTimeTables[i].Class.Equals(SelectedClass))
+                    if (AllTimeTables[i].Class.Equals (SelectedClass))
                         AllTimeTables[i] = value;
             }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        
-        public void FillRegisterButtonClick(object param)
+
+        public void FillRegisterButtonClick (object param)
         {
-            AllRegisters = AutoFill.GetFilledRegisters(AllRegisters, AllTimeTables, Teachers);
-            PropertyChangedClass();
+            AllRegisters = AutoFill.GetFilledRegisters (AllRegisters, AllTimeTables, Teachers);
+            PropertyChangedClass ();
+        }
+
+        public void AddStudent (object param)
+        {
+            var temp = Students.ToList ();
+            temp.Add (new Student ("", SelectedClass));
+            Students = temp;
+        }
+
+        public void AddTeacher (object param)
+        {
+            var temp = Teachers.ToList ();
+            temp.Add (new Teacher ("",
+                new List<TeacherPropertiesForSpecificClass>
+                {
+                    new TeacherPropertiesForSpecificClass(SelectedClass, false, new List<string>())
+                }));
+            Teachers = temp;
+        }
+
+        public void DeleteStudent (object param)
+        {
+            var temp = Students.ToList ();
+            temp.Remove (temp.FirstOrDefault (
+                student =>
+                    student.Class.Equals (SelectedClass) && student.StudentsView.Equals (SelectedStudent) &&
+                    student.Name.Equals (SelectedStudent.Name)));
+            Students = temp;
+        }
+
+        public void DeleteTeacher (object param)
+        {
+            var temp = Teachers.ToList ();
+            var ct = temp.FirstOrDefault (teacher => teacher.Name.Equals (SelectedTeacher.Name) && teacher.TeachersViews.Any (view => view.Equals (SelectedTeacher)) && teacher.TeacherProperties.Any (c => c.Class.Equals (SelectedClass) && Equals (c.ClassTeacher, SelectedTeacher.ClassTeacher)));
+            ct?.TeacherProperties.Remove (ct.TeacherProperties.FirstOrDefault (c => c.Class.Equals (SelectedClass)));
+            Teachers = temp;
         }
 
         #region BoundVariables
@@ -116,7 +164,7 @@ namespace LAS_Interface
             set
             {
                 RegisterOfCurrentWeek.Monday = value;
-                OnPropertyChanged(nameof(RegisterDataObjectsMonday));
+                OnPropertyChanged (nameof (RegisterDataObjectsMonday));
             }
         }
 
@@ -126,7 +174,7 @@ namespace LAS_Interface
             set
             {
                 RegisterOfCurrentWeek.Tuesday = value;
-                OnPropertyChanged(nameof(RegisterDataObjectsTuesday));
+                OnPropertyChanged (nameof (RegisterDataObjectsTuesday));
             }
         }
 
@@ -136,7 +184,7 @@ namespace LAS_Interface
             set
             {
                 RegisterOfCurrentWeek.Wednesday = value;
-                OnPropertyChanged(nameof(RegisterDataObjectsWednesday));
+                OnPropertyChanged (nameof (RegisterDataObjectsWednesday));
             }
         }
 
@@ -146,7 +194,7 @@ namespace LAS_Interface
             set
             {
                 RegisterOfCurrentWeek.Thursday = value;
-                OnPropertyChanged(nameof(RegisterDataObjectsThursday));
+                OnPropertyChanged (nameof (RegisterDataObjectsThursday));
             }
         }
 
@@ -156,7 +204,7 @@ namespace LAS_Interface
             set
             {
                 RegisterOfCurrentWeek.Friday = value;
-                OnPropertyChanged(nameof(RegisterDataObjectsFriday));
+                OnPropertyChanged (nameof (RegisterDataObjectsFriday));
             }
         }
 
@@ -166,7 +214,7 @@ namespace LAS_Interface
             set
             {
                 _listItems = value;
-                OnPropertyChanged(nameof(ListItems));
+                OnPropertyChanged (nameof (ListItems));
             }
         }
 
@@ -176,8 +224,8 @@ namespace LAS_Interface
             set
             {
                 _currentWeek = value;
-                OnPropertyChanged(nameof(CurrentWeek));
-                PropertyChangedClass();
+                OnPropertyChanged (nameof (CurrentWeek));
+                PropertyChangedClass ();
             }
         }
 
@@ -187,7 +235,7 @@ namespace LAS_Interface
             set
             {
                 _selectedClass = value;
-                PropertyChangedClass();
+                PropertyChangedClass ();
             }
         }
 
@@ -197,7 +245,7 @@ namespace LAS_Interface
             set
             {
                 _classItems = value;
-                OnPropertyChanged(nameof(ClassItems));
+                OnPropertyChanged (nameof (ClassItems));
             }
         }
 
@@ -207,7 +255,7 @@ namespace LAS_Interface
             set
             {
                 TimeTableOfCurrentClass.TimeTableRows = value;
-                OnPropertyChanged(nameof(TimeTableForView));
+                OnPropertyChanged (nameof (TimeTableForView));
             }
         }
 
@@ -216,9 +264,9 @@ namespace LAS_Interface
             get
             {
                 return
-                    Teachers.SelectMany(
-                            teacher => teacher.TeachersViews.Where(view => view.Class.Equals(SelectedClass)).ToList())
-                        .ToList();
+                    Teachers.SelectMany (
+                            teacher => teacher.TeachersViews.Where (view => view.Class.Equals (SelectedClass)).ToList ())
+                        .ToList ();
             }
             set //Don't add TeachersViews - Always add Teachers!
             {
@@ -227,13 +275,13 @@ namespace LAS_Interface
                     Teachers[i].Name = value[i].Name;
                     foreach (var t in Teachers[i].TeacherProperties)
                     {
-                        if (!t.Class.Equals(SelectedClass))
+                        if (!t.Class.Equals (SelectedClass))
                             continue;
-                        t.Subjects = value[i].Subjects.Split(',').ToList();
+                        t.Subjects = value[i].Subjects.Split (',').ToList ();
                         t.ClassTeacher = value[i].ClassTeacher;
                     }
                 }
-                OnPropertyChanged(nameof(TeachersViews));
+                OnPropertyChanged (nameof (TeachersViews));
             }
         }
 
@@ -242,60 +290,125 @@ namespace LAS_Interface
             get
             {
                 return
-                    Students.Where(student => student.Class.Equals(SelectedClass))
-                        .Select(student => student.StudentsView)
-                        .ToList();
+                    Students.Where (student => student.Class.Equals (SelectedClass))
+                        .Select (student => student.StudentsView)
+                        .ToList ();
             }
             set //see at TeachersView
             {
                 for (var i = 0; i < Students.Count; i++)
-                    if (Students[i].Class.Equals(SelectedClass))
+                    if (Students[i].Class.Equals (SelectedClass))
                     {
                         Students[i].Name = value[i].Name;
                         Students[i].StudentsView.Name = value[i].Name;
                     }
-                OnPropertyChanged(nameof(StudentsViews));
+                OnPropertyChanged (nameof (StudentsViews));
             }
         }
 
-        public DateTime SelectedDate
+        public DateTime SelectedDate //TODO Handle Runtime Changed Date
         {
-            get {return _selectedDate;}
+            get { return _selectedDate; }
             set
             {
                 _selectedDate = value;
-                OnPropertyChanged(nameof(SelectedDate));
+                OnPropertyChanged (nameof (SelectedDate));
                 ListItems = TimeUtil.GetWeekList (SelectedDate, GeneralPublicStuff.WeeksPerYear);
             }
         }
+
+        public StudentsView SelectedStudent
+        {
+            get { return _selectedStudent; }
+            set
+            {
+                _selectedStudent = value;
+                OnPropertyChanged (nameof (SelectedStudent));
+                OnPropertyChanged (nameof (ContextMenuDeleteStudentItemVisibility));
+            }
+        }
+
+        public TeachersView SelectedTeacher
+        {
+            get { return _selectedTeacher; }
+            set
+            {
+                _selectedTeacher = value;
+                OnPropertyChanged (nameof (SelectedTeacher));
+                OnPropertyChanged (nameof (ContextMenuDeleteTeacherItemVisibility));
+            }
+        }
+
+        public bool StudentsContextMenuOpened
+        {
+            get { return _studentsContextMenuOpened; }
+            set
+            {
+                _studentsContextMenuOpened = value;
+                OnPropertyChanged (nameof (StudentsContextMenuOpened));
+            }
+        }
+
+        public bool TeachersContextMenuOpened
+        {
+            get { return _teachersContextMenuOpened; }
+            set
+            {
+                _teachersContextMenuOpened = value;
+                OnPropertyChanged (nameof (TeachersContextMenuOpened));
+            }
+        }
+
+        public Visibility ContextMenuDeleteStudentItemVisibility
+            => SelectedStudent != null ? Visibility.Visible : Visibility.Collapsed;
+
+        public Visibility ContextMenuDeleteTeacherItemVisibility
+            => SelectedTeacher != null ? Visibility.Visible : Visibility.Collapsed;
 
         #endregion
 
         #region Commands
 
         public ICommand FillRegisterButtonClickCommand { get; set; }
+        public ICommand AddStudentCommand { get; set; }
+        public ICommand AddTeacherCommand { get; set; }
+        public ICommand DeleteStudentCommand { get; set; }
+        public ICommand DeleteTeacherCommand { get; set; }
 
         #endregion
 
-        public void PropertyChangedClass()
+        #region External Called Methods
+
+        public void OnStudentsViewRightClick (object sender, MouseButtonEventArgs e)
         {
-            OnPropertyChanged(nameof(SelectedClass));
-            OnPropertyChanged(nameof(RegisterOfCurrentWeek));
-            OnPropertyChanged(nameof(RegisterDataObjectsMonday));
-            OnPropertyChanged(nameof(RegisterDataObjectsTuesday));
-            OnPropertyChanged(nameof(RegisterDataObjectsWednesday));
-            OnPropertyChanged(nameof(RegisterDataObjectsThursday));
-            OnPropertyChanged(nameof(RegisterDataObjectsFriday));
-            OnPropertyChanged(nameof(TimeTableForView));
-            OnPropertyChanged(nameof(TeachersViews));
-            OnPropertyChanged(nameof(StudentsViews));
-            OnPropertyChanged(nameof(Students));
-            OnPropertyChanged(nameof(Teachers));
+            StudentsContextMenuOpened = true;
         }
 
-        protected void OnPropertyChanged(string name)
+        public void OnTeachersViewRightClick (object sender, MouseButtonEventArgs e)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
+        #endregion
+
+        public void PropertyChangedClass ()
+        {
+            OnPropertyChanged (nameof (SelectedClass));
+            OnPropertyChanged (nameof (RegisterOfCurrentWeek));
+            OnPropertyChanged (nameof (RegisterDataObjectsMonday));
+            OnPropertyChanged (nameof (RegisterDataObjectsTuesday));
+            OnPropertyChanged (nameof (RegisterDataObjectsWednesday));
+            OnPropertyChanged (nameof (RegisterDataObjectsThursday));
+            OnPropertyChanged (nameof (RegisterDataObjectsFriday));
+            OnPropertyChanged (nameof (TimeTableForView));
+            OnPropertyChanged (nameof (TeachersViews));
+            OnPropertyChanged (nameof (StudentsViews));
+            OnPropertyChanged (nameof (Students));
+            OnPropertyChanged (nameof (Teachers));
+        }
+
+        protected void OnPropertyChanged (string name)
+        {
+            PropertyChanged?.Invoke (this, new PropertyChangedEventArgs (name));
         }
     }
 }
