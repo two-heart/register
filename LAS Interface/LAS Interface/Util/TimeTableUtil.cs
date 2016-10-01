@@ -14,6 +14,7 @@ namespace LAS_Interface.Util
             return new TimeTable(rows, cclass);
         }
 
-        public static List<TimeTable> GetAllEmptyTimeTables(List<string> classes) => classes.Select(GetEmptyTimeTable).ToList();
+        public static List<TimeTable> GetAllEmptyTimeTables(List<string> classes)
+            => classes.Select(GetEmptyTimeTable).ToList();
     }
 }

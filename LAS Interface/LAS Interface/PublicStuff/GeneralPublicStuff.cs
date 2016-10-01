@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace LAS_Interface.PublicStuff
+﻿namespace LAS_Interface.PublicStuff
 {
     public class GeneralPublicStuff
     {

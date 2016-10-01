@@ -2,12 +2,11 @@
 {
     public class StudentsView
     {
-        public string Name { get;
-            set; }
-
         public StudentsView(string name)
         {
             Name = name;
         }
+
+        public string Name { get; set; }
     }
 }

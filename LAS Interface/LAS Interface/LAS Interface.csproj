@@ -68,11 +68,19 @@
     <Compile Include="Types\TimeTable.cs" />
     <Compile Include="Types\TimeTableRow.cs" />
     <Compile Include="Types\WeekDataObjects.cs" />
+    <Compile Include="UI\EditClassesPopUpWindow.xaml.cs">
+      <DependentUpon>EditClassesPopUpWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\EditClassesViewModel.cs" />
     <Compile Include="Util\DataObjectsUtil.cs" />
     <Compile Include="Util\GeneralUtil.cs" />
     <Compile Include="Util\TimeTableUtil.cs" />
     <Compile Include="Util\TimeUtil.cs" />
-    <Page Include="MainWindow.xaml">
+    <Page Include="UI\EditClassesPopUpWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -80,8 +88,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainViewModel.cs" />
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="UI\MainViewModel.cs" />
+    <Compile Include="UI\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>

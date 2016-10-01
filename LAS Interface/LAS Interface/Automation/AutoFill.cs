@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Windows.Navigation;
 using LAS_Interface.Types;
 using LAS_Interface.Types.Humans.Teacher;
 using LAS_Interface.Util;
@@ -21,97 +20,53 @@ namespace LAS_Interface.Automation
                         .Count > 0)
             select new ClassRegister((from oldWeekDataObject in classRegister.WeekDataObjects
                 let dataObjectMonday =
-                oldWeekDataObject.Monday.Select(
-                    (o, index) =>
-                        string.IsNullOrEmpty(o.Subject) && index < timeTable.TimeTableRows.Count
-                            ? new DataObject(
-                                GeneralUtil.ReturnFirstOrException(teachers.Where(
-                                        teacher =>
-                                            teacher.TeacherProperties.Any(
-                                                prop => prop.Subjects.Contains(timeTable.TimeTableRows[index].Monday)))
-                                    .Select(teacher => teacher.Name).ToList(), o.Teacher)
-                                , timeTable.TimeTableRows[index].Monday, o.Content, o.Remarks)
-                            : new DataObject(
-                                GeneralUtil.ReturnFirstOrException(teachers.Where(
-                                        teacher =>
-                                            teacher.TeacherProperties.Any(
-                                                prop => prop.Subjects.Contains(o.Subject)))
-                                    .Select(teacher => teacher.Name).ToList(), o.Teacher), o.Subject, o.Content,
-                                o.Remarks)).ToList()
+                GetDataObjectToWeekDay(DayOfWeek.Monday, oldWeekDataObject.Monday, timeTable, teachers)
                 let dataObjectTuesday =
-                oldWeekDataObject.Tuesday.Select(
-                    (o, index) =>
-                        string.IsNullOrEmpty(o.Subject) && index < timeTable.TimeTableRows.Count
-                            ? new DataObject(
-                                GeneralUtil.ReturnFirstOrException(teachers.Where(
-                                        teacher =>
-                                            teacher.TeacherProperties.Any(
-                                                prop => prop.Subjects.Contains(timeTable.TimeTableRows[index].Tuesday)))
-                                    .Select(teacher => teacher.Name).ToList(), o.Teacher),
-                                timeTable.TimeTableRows[index].Tuesday, o.Content, o.Remarks)
-                            : new DataObject(
-                                GeneralUtil.ReturnFirstOrException(teachers.Where(
-                                        teacher =>
-                                            teacher.TeacherProperties.Any(
-                                                prop => prop.Subjects.Contains(o.Subject)))
-                                    .Select(teacher => teacher.Name).ToList(), o.Teacher), o.Subject, o.Content,
-                                o.Remarks)).ToList()
+                GetDataObjectToWeekDay(DayOfWeek.Tuesday, oldWeekDataObject.Tuesday, timeTable, teachers)
                 let dataObjectWednesday =
-                oldWeekDataObject.Wednesday.Select(
-                    (o, index) =>
-                        string.IsNullOrEmpty(o.Subject) && index < timeTable.TimeTableRows.Count
-                            ? new DataObject(
-                                GeneralUtil.ReturnFirstOrException(teachers.Where(
-                                        teacher =>
-                                            teacher.TeacherProperties.Any(
-                                                prop => prop.Subjects.Contains(timeTable.TimeTableRows[index].Wednesday)))
-                                    .Select(teacher => teacher.Name).ToList(), o.Teacher),
-                                timeTable.TimeTableRows[index].Wednesday, o.Content, o.Remarks)
-                            : new DataObject(
-                                GeneralUtil.ReturnFirstOrException(teachers.Where(
-                                        teacher =>
-                                            teacher.TeacherProperties.Any(
-                                                prop => prop.Subjects.Contains(o.Subject)))
-                                    .Select(teacher => teacher.Name).ToList(), o.Teacher), o.Subject, o.Content,
-                                o.Remarks)).ToList()
+                GetDataObjectToWeekDay(DayOfWeek.Wednesday, oldWeekDataObject.Wednesday, timeTable, teachers)
                 let dataObjectThursday =
-                oldWeekDataObject.Thursday.Select(
-                    (o, index) =>
-                        string.IsNullOrEmpty(o.Subject) && index < timeTable.TimeTableRows.Count
-                            ? new DataObject(
-                                GeneralUtil.ReturnFirstOrException(teachers.Where(
-                                        teacher =>
-                                            teacher.TeacherProperties.Any(
-                                                prop => prop.Subjects.Contains(timeTable.TimeTableRows[index].Thursday)))
-                                    .Select(teacher => teacher.Name).ToList(), o.Teacher),
-                                timeTable.TimeTableRows[index].Thursday, o.Content, o.Remarks)
-                            : new DataObject(
-                                GeneralUtil.ReturnFirstOrException(teachers.Where(
-                                        teacher =>
-                                            teacher.TeacherProperties.Any(
-                                                prop => prop.Subjects.Contains(o.Subject)))
-                                    .Select(teacher => teacher.Name).ToList(), o.Teacher), o.Subject, o.Content,
-                                o.Remarks)).ToList()
+                GetDataObjectToWeekDay(DayOfWeek.Thursday, oldWeekDataObject.Thursday, timeTable, teachers)
                 let dataObjectFriday =
-                oldWeekDataObject.Friday.Select(
-                    (o, index) =>
-                        string.IsNullOrEmpty(o.Subject) && index < timeTable.TimeTableRows.Count
-                            ? new DataObject(
-                                GeneralUtil.ReturnFirstOrException(teachers.Where(
-                                        teacher =>
-                                            teacher.TeacherProperties.Any(
-                                                prop => prop.Subjects.Contains(timeTable.TimeTableRows[index].Friday)))
-                                    .Select(teacher => teacher.Name).ToList(), o.Teacher),
-                                timeTable.TimeTableRows[index].Friday, o.Content, o.Remarks)
-                            : new DataObject(
-                                GeneralUtil.ReturnFirstOrException(teachers.Where(
-                                        teacher =>
-                                            teacher.TeacherProperties.Any(
-                                                prop => prop.Subjects.Contains(o.Subject)))
-                                    .Select(teacher => teacher.Name).ToList(), o.Teacher), o.Subject, o.Content,
-                                o.Remarks)).ToList()
+                GetDataObjectToWeekDay(DayOfWeek.Friday, oldWeekDataObject.Friday, timeTable, teachers)
                 select
                 new WeekDataObjects(dataObjectMonday, dataObjectTuesday, dataObjectWednesday, dataObjectThursday,
                     dataObjectFriday)).ToList(), classRegister.Class)).ToList();
+
+
+        public static List<DataObject> GetDataObjectToWeekDay(DayOfWeek weekDay,
+                List<DataObject> oldWeekDataObjectsToDay, TimeTable timeTable, IEnumerable<Teacher> teachers)
+            => oldWeekDataObjectsToDay?.Select(
+                (o, index) =>
+                    string.IsNullOrEmpty(o.Subject) && (index < timeTable.TimeTableRows.Count)
+                        ? new DataObject(
+                            GeneralUtil.ReturnFirstOrException(teachers.Where(
+                                    teacher =>
+                                        teacher.TeacherProperties.Any(
+                                            prop =>
+                                                prop.Subjects.Contains(
+                                                    GetStringToDateFromTimeTableRow(timeTable.TimeTableRows[index],
+                                                        weekDay))))
+                                .Select(teacher => teacher.Name).ToList(), o.Teacher),
+                            GetStringToDateFromTimeTableRow(timeTable.TimeTableRows[index], weekDay), o.Content,
+                            o.Remarks)
+                        : new DataObject(
+                            GeneralUtil.ReturnFirstOrException(teachers.Where(
+                                    teacher =>
+                                        teacher.TeacherProperties.Any(
+                                            prop => prop.Subjects.Contains(o.Subject)))
+                                .Select(teacher => teacher.Name).ToList(), o.Teacher), o.Subject, o.Content,
+                            o.Remarks)).ToList();
+
+        public static string GetStringToDateFromTimeTableRow(TimeTableRow row, DayOfWeek weekDay) =>
+            weekDay == DayOfWeek.Monday
+                ? row.Monday
+                : weekDay == DayOfWeek.Tuesday
+                    ? row.Tuesday
+                    : weekDay == DayOfWeek.Wednesday
+                        ? row.Wednesday
+                        : weekDay == DayOfWeek.Thursday
+                            ? row.Thursday
+                            : weekDay == DayOfWeek.Friday ? row.Friday : null;
     }
 }

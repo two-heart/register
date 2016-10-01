@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using LAS_Interface.PublicStuff;
-using LAS_Interface.Types;
-using LAS_Interface.Types.Humans.Teacher;
+﻿using System.Collections.Generic;
 
 namespace LAS_Interface.Util
 {
@@ -17,6 +13,7 @@ namespace LAS_Interface.Util
             return fin;
         }
 
-        public static string ReturnFirstOrException(List<string> list, string exception) => list.Count > 0 ? list[0] : exception;
+        public static string ReturnFirstOrException(List<string> list, string exception)
+            => list.Count > 0 ? list[0] : exception;
     }
 }

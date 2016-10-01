@@ -7,7 +7,7 @@ namespace LAS_Interface.Util
 {
     public class DataObjectsUtil
     {
-        public static List<DataObject> GetnEmptyDataObjects (int n)
+        public static List<DataObject> GetnEmptyDataObjects(int n)
         {
             var fin = new List<DataObject>();
             while (n > 0)
@@ -18,14 +18,14 @@ namespace LAS_Interface.Util
             return fin;
         }
 
-        public static WeekDataObjects GetEmptyWeekDataObjects (int entriesPerDay)
+        public static WeekDataObjects GetEmptyWeekDataObjects(int entriesPerDay)
         {
-            return new WeekDataObjects (
-                GetnEmptyDataObjects (entriesPerDay),
-                GetnEmptyDataObjects (entriesPerDay),
-                GetnEmptyDataObjects (entriesPerDay),
-                GetnEmptyDataObjects (entriesPerDay),
-                GetnEmptyDataObjects (entriesPerDay));
+            return new WeekDataObjects(
+                GetnEmptyDataObjects(entriesPerDay),
+                GetnEmptyDataObjects(entriesPerDay),
+                GetnEmptyDataObjects(entriesPerDay),
+                GetnEmptyDataObjects(entriesPerDay),
+                GetnEmptyDataObjects(entriesPerDay));
         }
 
         public static List<WeekDataObjects> GetEmptyAllDataObjects(int entriesPerDay, int count)
@@ -39,6 +39,12 @@ namespace LAS_Interface.Util
             return that;
         }
 
-        public static List<ClassRegister> GenerateAllEmptyClassDataObjectses (List<string> classes) => classes.Select(c => new ClassRegister(GetEmptyAllDataObjects(GeneralPublicStuff.EntriesPerDay, GeneralPublicStuff.WeeksPerYear), c)).ToList();
+        public static List<ClassRegister> GenerateAllEmptyClassDataObjectses(List<string> classes)
+            =>
+            classes.Select(
+                    c =>
+                        new ClassRegister(
+                            GetEmptyAllDataObjects(GeneralPublicStuff.EntriesPerDay, GeneralPublicStuff.WeeksPerYear), c))
+                .ToList();
     }
 }

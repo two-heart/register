@@ -2,10 +2,8 @@ c:\users\timo\documents\visual studio 2015\Projects\LAS Interface\LAS Interface\
 C:\Users\Timo\Source\Repos\register\LAS Interface\LAS Interface\bin\Debug\LAS Interface.exe.config
 C:\Users\Timo\Source\Repos\register\LAS Interface\LAS Interface\bin\Debug\LAS Interface.exe
 C:\Users\Timo\Source\Repos\register\LAS Interface\LAS Interface\bin\Debug\LAS Interface.pdb
-C:\Users\Timo\Source\Repos\register\LAS Interface\LAS Interface\obj\Debug\MainWindow.g.cs
 C:\Users\Timo\Source\Repos\register\LAS Interface\LAS Interface\obj\Debug\App.g.cs
 C:\Users\Timo\Source\Repos\register\LAS Interface\LAS Interface\obj\Debug\LAS Interface_MarkupCompile.cache
-C:\Users\Timo\Source\Repos\register\LAS Interface\LAS Interface\obj\Debug\MainWindow.baml
 C:\Users\Timo\Source\Repos\register\LAS Interface\LAS Interface\obj\Debug\LAS Interface.g.resources
 C:\Users\Timo\Source\Repos\register\LAS Interface\LAS Interface\obj\Debug\LAS_Interface.Properties.Resources.resources
 C:\Users\Timo\Source\Repos\register\LAS Interface\LAS Interface\obj\Debug\LAS Interface.csproj.GenerateResource.Cache
@@ -13,3 +11,7 @@ C:\Users\Timo\Source\Repos\register\LAS Interface\LAS Interface\obj\Debug\LAS In
 C:\Users\Timo\Source\Repos\register\LAS Interface\LAS Interface\obj\Debug\LAS Interface.pdb
 C:\Users\Timo\Source\Repos\register\LAS Interface\LAS Interface\obj\Debug\LAS Interface_MarkupCompile.lref
 C:\Users\Timo\Source\Repos\register\LAS Interface\LAS Interface\obj\Debug\LAS Interface.csprojResolveAssemblyReference.cache
+C:\Users\Timo\Source\Repos\register\LAS Interface\LAS Interface\obj\Debug\UI\EditClassesPopUpWindow.g.cs
+C:\Users\Timo\Source\Repos\register\LAS Interface\LAS Interface\obj\Debug\UI\MainWindow.g.cs
+C:\Users\Timo\Source\Repos\register\LAS Interface\LAS Interface\obj\Debug\UI\EditClassesPopUpWindow.baml
+C:\Users\Timo\Source\Repos\register\LAS Interface\LAS Interface\obj\Debug\UI\MainWindow.baml
