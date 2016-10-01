@@ -4,7 +4,7 @@ namespace LAS_Interface.Util
 {
     public class GeneralUtil
     {
-        public static List<string> GetClasses() //TODO
+        public static List<string> GetClasses()
         {
             var fin = new List<string>();
             for (var i = 1; i < 13; i++)

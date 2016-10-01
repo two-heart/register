@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Resources;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 
@@ -7,7 +8,7 @@ using System.Windows;
 // associated with an assembly.
 
 [assembly: AssemblyTitle("LAS Interface")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription ("Lehrer As a Service - The Interface")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("LAS Interface")]
@@ -54,3 +55,5 @@ using System.Windows;
 
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: NeutralResourcesLanguage ("en")]
+
