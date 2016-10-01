@@ -11,7 +11,6 @@ namespace LAS_Interface.Types
         }
 
         public List<WeekDataObjects> WeekDataObjects { get; set; }
-
         public string Class { get; set; }
     }
 }

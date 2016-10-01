@@ -9,17 +9,17 @@ namespace LAS_Interface.UI
     public class EditClassesViewModel : INotifyPropertyChanged
     {
         private readonly EditClassesPopUpWindow _editClassesPopUpWindow;
-        private MainViewModel _mainViewModel;
+        private readonly MainViewModel _mainViewModel;
 
         private string _text;
 
-        public EditClassesViewModel (EditClassesPopUpWindow eCPW, MainViewModel mvm)
+        public EditClassesViewModel(EditClassesPopUpWindow eCPW, MainViewModel mvm)
         {
             _editClassesPopUpWindow = eCPW;
             _mainViewModel = mvm;
 
-            CancelButtonClickCommand = new DelegateCommand (CancelButtonClick);
-            SaveButtonClickCommand = new DelegateCommand (SaveButtonClick);
+            CancelButtonClickCommand = new DelegateCommand(CancelButtonClick);
+            SaveButtonClickCommand = new DelegateCommand(SaveButtonClick);
 
             if (_mainViewModel.ClassItems.Count <= 0)
                 return;
@@ -35,26 +35,25 @@ namespace LAS_Interface.UI
 
         public string Text
         {
-            get
-            {
-                return _text;
-            }
+            get { return _text; }
             set
             {
                 _text = value;
-                OnPropertyChanged (nameof (Text));
+                OnPropertyChanged(nameof(Text));
             }
         }
 
-        public void CancelButtonClick (object param) => _editClassesPopUpWindow.Close ();
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        public void SaveButtonClick (object param)
+        public void CancelButtonClick(object param) => _editClassesPopUpWindow.Close();
+
+        public void SaveButtonClick(object param)
         {
             _mainViewModel.ClassItems = Text.Split('\n').ToList();
-            _editClassesPopUpWindow.Close ();
+            _editClassesPopUpWindow.Close();
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged (string name) => PropertyChanged?.Invoke (this, new PropertyChangedEventArgs (name));
+        protected void OnPropertyChanged(string name)
+            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }
 }

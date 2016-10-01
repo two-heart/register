@@ -6,7 +6,7 @@ namespace LAS_Interface.Util
 {
     public class TimeUtil
     {
-        public static List<string> GetWeekList(int year) //TODO
+        public static List<string> GetWeekList()
         {
             var fin = new List<string>();
             for (var i = 1; i <= GeneralPublicStuff.WeeksPerYear; i++)

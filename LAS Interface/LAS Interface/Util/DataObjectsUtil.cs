@@ -10,32 +10,23 @@ namespace LAS_Interface.Util
         public static List<DataObject> GetnEmptyDataObjects(int n)
         {
             var fin = new List<DataObject>();
-            while (n > 0)
-            {
+            for (; n > 0; n--)
                 fin.Add(new DataObject("", "", "", ""));
-                n--;
-            }
             return fin;
         }
 
-        public static WeekDataObjects GetEmptyWeekDataObjects(int entriesPerDay)
-        {
-            return new WeekDataObjects(
-                GetnEmptyDataObjects(entriesPerDay),
-                GetnEmptyDataObjects(entriesPerDay),
-                GetnEmptyDataObjects(entriesPerDay),
-                GetnEmptyDataObjects(entriesPerDay),
-                GetnEmptyDataObjects(entriesPerDay));
-        }
+        public static WeekDataObjects GetEmptyWeekDataObjects(int entriesPerDay) => new WeekDataObjects(
+            GetnEmptyDataObjects(entriesPerDay),
+            GetnEmptyDataObjects(entriesPerDay),
+            GetnEmptyDataObjects(entriesPerDay),
+            GetnEmptyDataObjects(entriesPerDay),
+            GetnEmptyDataObjects(entriesPerDay));
 
         public static List<WeekDataObjects> GetEmptyAllDataObjects(int entriesPerDay, int count)
         {
             var that = new List<WeekDataObjects>();
-            while (count > 0)
-            {
+            for (; count > 0; count--)
                 that.Add(GetEmptyWeekDataObjects(entriesPerDay));
-                count--;
-            }
             return that;
         }
 

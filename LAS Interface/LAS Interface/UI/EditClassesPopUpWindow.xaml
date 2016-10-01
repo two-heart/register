@@ -15,7 +15,7 @@
             </ScrollViewer>
         </Grid>
         <Grid VerticalAlignment="Bottom"
-              HorizontalAlignment="Center" 
+              HorizontalAlignment="Center"
               Margin="250,0,256,10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -23,8 +23,8 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <Button Content="Save"
-                    Grid.Column="0" 
-                    Command="{Binding SaveButtonClickCommand}"/>
+                    Grid.Column="0"
+                    Command="{Binding SaveButtonClickCommand}" />
             <GridSplitter Grid.Column="1"
                           Visibility="Hidden"
                           Width="5" />

@@ -161,12 +161,14 @@ namespace LAS_Interface.UI
             OnPropertyChanged(nameof(Teachers));
         }
 
-        protected void OnPropertyChanged(string name) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        protected void OnPropertyChanged(string name)
+            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 
         #region External Variables -> Those four vars & the two other vars (SelectedDate & ClassItems) should be saved/loaded to/from the Data Source
 
         public List<ClassRegister> AllRegisters { get; set; }
         public List<TimeTable> AllTimeTables { get; set; }
+
         public List<Teacher> Teachers
         {
             get { return _teachers; }
@@ -180,6 +182,7 @@ namespace LAS_Interface.UI
                 OnPropertyChanged(nameof(TeachersViews));
             }
         }
+
         public List<Student> Students
         {
             get { return _students; }
