@@ -42,7 +42,7 @@ namespace LAS_Interface.Util
         /// Generates for every given class an empty classdata object - so it generates literally everything with no content.
         /// </summary>
         /// <returns>the classdata objects</returns>
-        /*public static List<ClassRegister> GenerateAllEmptyClassDataObjectses(List<string> classes, List<string> weekList)
+        public static List<ClassRegister> GenerateAllEmptyClassDataObjectses(List<string> classes, List<string> weekList)
             =>
             classes.Select(
                     c =>
@@ -51,19 +51,29 @@ namespace LAS_Interface.Util
                 .ToList();
 
         public static List<ClassRegister> GenerateLeftEmptyClassDataObjectses(List<string> classes,
-            List<string> weekList, List<ClassRegister> oldClassRegisters)
+            List<string> weekList, List<ClassRegister> oldClassRegisters, int entriesPerDay)
         {
             var fin = new List<ClassRegister>();
+            if (weekList == null || classes == null)
+                return fin;
+            if (oldClassRegisters == null)
+                return GenerateAllEmptyClassDataObjectses(classes, weekList);
             foreach (var c in classes)
             {
-                if (oldClassRegisters.Any(register => register.Class.Equals(c)))
+                var firstOrDefaultClassRegister = oldClassRegisters.FirstOrDefault(register => register.Class.Equals(c));
+                if (firstOrDefaultClassRegister != null)
                 {
-                    fin.Add(oldClassRegisters.FirstOrDefault(register => register.Class.Equals(c)));
+                    var missingWeeks =
+                        weekList.Where(
+                            s => !firstOrDefaultClassRegister.WeekDataObjects.Any(objects => objects.Week.Equals(s)));
+                    foreach (var missingWeek in missingWeeks)
+                        firstOrDefaultClassRegister.WeekDataObjects.Add(GetEmptyWeekDataObjects(entriesPerDay, missingWeek));
+                    fin.Add(firstOrDefaultClassRegister);
                     continue;
                 }
-                fin.Add(G);
+                fin.Add(new ClassRegister(GetEmptyAllDataObjects(entriesPerDay, weekList), c));
             }
-            return null;
-        }*/
+            return fin;
+        }
     }
 }

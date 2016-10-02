@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Input;
 using LAS_Interface.Automation;
 using LAS_Interface.ForeignStuff;
+using LAS_Interface.PublicStuff;
 using LAS_Interface.Types;
 using LAS_Interface.Types.Humans.Students;
 using LAS_Interface.Types.Humans.Teacher;
@@ -441,6 +442,8 @@ namespace LAS_Interface.UI
                 _selectedDate = value;
                 OnPropertyChanged (nameof (SelectedDate));
                 WeekListItems = TimeUtil.GetWeekList (SelectedDate, TimeUtil.GetWeeksTillDate (value, value.AddYears (1)));
+                AllRegisters = DataObjectsUtil.GenerateLeftEmptyClassDataObjectses(ClassItems, WeekListItems,
+                    AllRegisters, Resources.EntriesPerDay);
             }
         }
         /// <summary>
