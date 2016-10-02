@@ -7,10 +7,14 @@ namespace LAS_Interface.UI
     /// </summary>
     public partial class EditClassesPopUpWindow : Window
     {
-        public EditClassesPopUpWindow(MainViewModel mvm)
+        /// <summary>
+        /// Initializes the class popup window and sets the EditClassesViewModel as the data context
+        /// </summary>
+        /// <returns>nothing</returns>
+        public EditClassesPopUpWindow (MainViewModel mvm)
         {
-            InitializeComponent();
-            DataContext = new EditClassesViewModel(this, mvm);
+            InitializeComponent ();
+            DataContext = new EditClassesViewModel (this, mvm);
         }
     }
 }

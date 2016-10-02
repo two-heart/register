@@ -60,7 +60,7 @@
     </ApplicationDefinition>
     <Compile Include="Automation\AutoFill.cs" />
     <Compile Include="ForeignStuff\DelegateCommand.cs" />
-    <Compile Include="PublicStuff\GeneralPublicStuff.cs" />
+    <Compile Include="PublicStuff\Resources.cs" />
     <Compile Include="Types\ClassRegister.cs" />
     <Compile Include="Types\DataObject.cs" />
     <Compile Include="Types\Humans\Students\Student.cs" />
@@ -115,6 +115,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="ClassDiagram1.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

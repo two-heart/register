@@ -21,11 +21,8 @@ namespace LAS_Interface.ForeignStuff
         }
 
         public event EventHandler CanExecuteChanged;
-
         public bool CanExecute(object parameter) => (_canExecute == null) || _canExecute(parameter);
-
         public void Execute(object parameter) => _execute(parameter);
-
         public void RaiseCanExecuteChanged() => CanExecuteChanged?.Invoke(this, EventArgs.Empty);
     }
 }

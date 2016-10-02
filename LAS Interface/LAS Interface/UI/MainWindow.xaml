@@ -69,9 +69,9 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <ListView x:Name="ListView"
-                              ItemsSource="{Binding ListItems, UpdateSourceTrigger=PropertyChanged}"
+                              ItemsSource="{Binding WeekListItems, UpdateSourceTrigger=PropertyChanged}"
                               Grid.Column="0"
-                              SelectedIndex="{Binding CurrentWeek, UpdateSourceTrigger=PropertyChanged}" />
+                              SelectedItem="{Binding CurrentWeek, UpdateSourceTrigger=PropertyChanged}" />
                     <ScrollViewer HorizontalScrollBarVisibility="Auto"
                                   Grid.Column="1">
                         <Grid>
@@ -98,7 +98,7 @@
                                       Grid.Row="3"
                                       ItemsSource="{Binding RegisterDataObjectsTuesday, UpdateSourceTrigger=PropertyChanged}" />
                             <Label Content="Wednesday"
-                                   Grid.Row="4" />
+                                   Grid.Row="4" Margin="0,14,0,0" Grid.RowSpan="2" />
                             <DataGrid AutoGenerateColumns="True"
                                       Grid.Row="5"
                                       ItemsSource="{Binding RegisterDataObjectsWednesday, UpdateSourceTrigger=PropertyChanged}" />

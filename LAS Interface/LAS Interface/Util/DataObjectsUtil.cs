@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using LAS_Interface.PublicStuff;
 using LAS_Interface.Types;
@@ -7,35 +8,45 @@ namespace LAS_Interface.Util
 {
     public class DataObjectsUtil
     {
-        public static List<DataObject> GetnEmptyDataObjects(int n)
+        /// <summary>
+        /// Generates n empty Data objects - so it generates the content for one day in the register
+        /// </summary>
+        /// <returns>data objects</returns>
+        public static List<DataObject> GetnEmptyDataObjects (int n)
         {
-            var fin = new List<DataObject>();
+            var fin = new List<DataObject> ();
             for (; n > 0; n--)
-                fin.Add(new DataObject("", "", "", ""));
+                fin.Add (new DataObject ("", "", "", ""));
             return fin;
         }
 
-        public static WeekDataObjects GetEmptyWeekDataObjects(int entriesPerDay) => new WeekDataObjects(
-            GetnEmptyDataObjects(entriesPerDay),
-            GetnEmptyDataObjects(entriesPerDay),
-            GetnEmptyDataObjects(entriesPerDay),
-            GetnEmptyDataObjects(entriesPerDay),
-            GetnEmptyDataObjects(entriesPerDay));
+        /// <summary>
+        /// Generates one empty weekdata object - so it generates for every weekday one empty data object
+        /// </summary>
+        /// <returns>weekdata object</returns>
+        public static WeekDataObjects GetEmptyWeekDataObjects (int entriesPerDay, string week) => new WeekDataObjects (
+                    GetnEmptyDataObjects (entriesPerDay),
+                    GetnEmptyDataObjects (entriesPerDay),
+                    GetnEmptyDataObjects (entriesPerDay),
+                    GetnEmptyDataObjects (entriesPerDay),
+                    GetnEmptyDataObjects (entriesPerDay), week);
 
-        public static List<WeekDataObjects> GetEmptyAllDataObjects(int entriesPerDay, int count)
-        {
-            var that = new List<WeekDataObjects>();
-            for (; count > 0; count--)
-                that.Add(GetEmptyWeekDataObjects(entriesPerDay));
-            return that;
-        }
+        /// <summary>
+        /// Generates all empty weekdata objects for a specific class. So it generates for every week one weekdata object
+        /// </summary>
+        /// <returns>weekdata objects</returns>
+        public static List<WeekDataObjects> GetEmptyAllDataObjects (int entriesPerDay, List<string> weekList) => weekList.Select(week => GetEmptyWeekDataObjects(entriesPerDay, week)).ToList();
 
-        public static List<ClassRegister> GenerateAllEmptyClassDataObjectses(List<string> classes)
-            =>
-            classes.Select(
-                    c =>
-                        new ClassRegister(
-                            GetEmptyAllDataObjects(GeneralPublicStuff.EntriesPerDay, GeneralPublicStuff.WeeksPerYear), c))
-                .ToList();
+        /// <summary>
+        /// Generates for every given class an empty classdata object - so it generates literally everything with no content.
+        /// </summary>
+        /// <returns>the classdata objects</returns>
+        public static List<ClassRegister> GenerateAllEmptyClassDataObjectses (List<string> classes, DateTime startDate, DateTime endDate, List<string> weekList )
+                    =>
+                    classes.Select (
+                            c =>
+                                new ClassRegister (
+                                    GetEmptyAllDataObjects (Resources.EntriesPerDay, weekList), c))
+                        .ToList ();
     }
 }

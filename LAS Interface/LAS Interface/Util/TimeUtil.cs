@@ -9,7 +9,7 @@ namespace LAS_Interface.Util
         public static List<string> GetWeekList()
         {
             var fin = new List<string>();
-            for (var i = 1; i <= GeneralPublicStuff.WeeksPerYear; i++)
+            for (var i = 1; i <= Resources.WeeksPerYear; i++)
                 fin.Add("KW: " + i);
             return fin;
         }
@@ -32,6 +32,14 @@ namespace LAS_Interface.Util
             while (now.DayOfWeek != DayOfWeek.Monday)
                 now = now.AddDays(1);
             return now;
+        }
+
+        public static int GetWeeksTillDate(DateTime now, DateTime end)
+        {
+            var fin = 0;
+            for (; now < end; now = now.AddDays(7))
+                fin++;
+            return fin;
         }
     }
 }

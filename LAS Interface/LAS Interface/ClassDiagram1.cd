@@ -1,0 +1,175 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="LAS_Interface.App" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>App.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LAS_Interface.Automation.AutoFill" Collapsed="true">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAAAAAAQAAAAAAAAAAAAEAAAAAAAAA=</HashCode>
+      <FileName>Automation\AutoFill.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LAS_Interface.ForeignStuff.DelegateCommand" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQEACAAQAAECAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ForeignStuff\DelegateCommand.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="LAS_Interface.Properties.Resources" Collapsed="true">
+    <Position X="4" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABEAAAAQAAAAAAAAAAAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LAS_Interface.Properties.Settings" Collapsed="true">
+    <Position X="5.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LAS_Interface.PublicStuff.Resources" Collapsed="true">
+    <Position X="5.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAACAAAAAAAAAAAAAQAAAAAAAAAAAAA=</HashCode>
+      <FileName>PublicStuff\Resources.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LAS_Interface.Types.ClassRegister" Collapsed="true">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAgAAA=</HashCode>
+      <FileName>Types\ClassRegister.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LAS_Interface.Types.DataObject" Collapsed="true">
+    <Position X="5.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAoAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Types\DataObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LAS_Interface.Types.TimeTable" Collapsed="true">
+    <Position X="7.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Types\TimeTable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LAS_Interface.Types.TimeTableRow" Collapsed="true">
+    <Position X="0.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAIAACAAAAAAAAAAACAAIAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>Types\TimeTableRow.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LAS_Interface.Types.WeekDataObjects" Collapsed="true">
+    <Position X="5.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAIAACAAAAAAAAAAACAAIAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Types\WeekDataObjects.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LAS_Interface.Types.Humans.Students.Student" Collapsed="true">
+    <Position X="7.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAACAAAAAAAIAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Types\Humans\Students\Student.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LAS_Interface.Types.Humans.Students.StudentsView" Collapsed="true">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Types\Humans\Students\StudentsView.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LAS_Interface.Types.Humans.Teacher.Teacher" Collapsed="true">
+    <Position X="2.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAABAAgAAAA=</HashCode>
+      <FileName>Types\Humans\Teacher\Teacher.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LAS_Interface.Types.Humans.Teacher.TeacherPropertiesForSpecificClass" Collapsed="true">
+    <Position X="4" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAAAAIAAAAAAAAAAAAAAAAEAAAAAAA=</HashCode>
+      <FileName>Types\Humans\Teacher\TeacherPropertiesForSpecificClass.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LAS_Interface.Types.Humans.Teacher.TeachersView" Collapsed="true">
+    <Position X="5.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAAAAIAAAQAAAAAAAAAAAAEAAAAAAA=</HashCode>
+      <FileName>Types\Humans\Teacher\TeachersView.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LAS_Interface.UI.EditClassesPopUpWindow" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\EditClassesPopUpWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="LAS_Interface.UI.EditClassesViewModel" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="4" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAUAQAAAIAAAIAAAgAAAAAAIAgAACAAAAAA=</HashCode>
+      <FileName>UI\EditClassesViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="LAS_Interface.UI.MainViewModel" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>RYIAkCMAAEYSQkA0IQwDAEBAgACAYoAIgQINAgQAIgA=</HashCode>
+      <FileName>UI\MainViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="LAS_Interface.UI.MainWindow" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAABAA=</HashCode>
+      <FileName>UI\MainWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="LAS_Interface.Util.DataObjectsUtil" Collapsed="true">
+    <Position X="7.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEAAAAAAIAAAAAAAAAAABAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Util\DataObjectsUtil.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LAS_Interface.Util.GeneralUtil" Collapsed="true">
+    <Position X="7.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAQ=</HashCode>
+      <FileName>Util\GeneralUtil.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LAS_Interface.Util.TimeTableUtil" Collapsed="true">
+    <Position X="2.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAgAAA=</HashCode>
+      <FileName>Util\TimeTableUtil.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LAS_Interface.Util.TimeUtil" Collapsed="true">
+    <Position X="4" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAAAAAAAAAAgAIAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Util\TimeUtil.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

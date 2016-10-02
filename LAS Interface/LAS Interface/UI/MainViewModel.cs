@@ -19,9 +19,9 @@ namespace LAS_Interface.UI
     {
         private readonly MainWindow _mainWindow;
         private List<string> _classItems;
-        private int _currentWeek;
+        private string _currentWeek;
 
-        private List<string> _listItems;
+        private List<string> _weekListItems;
         private string _selectedClass;
         private DateTime _selectedDate;
         private StudentsView _selectedStudent;
@@ -29,25 +29,29 @@ namespace LAS_Interface.UI
         private List<Student> _students;
         private List<Teacher> _teachers;
 
-        public MainViewModel(MainWindow mw)
-            //TODO Handle Runtime Changed Date
+        /// <summary>
+        /// Initializes the MainViewModel - the ViewModel to the MainWindow - so literally everything
+        /// </summary>
+        /// <returns>nothing</returns>
+        public MainViewModel (MainWindow mw)
+        //TODO Handle Runtime Changed Date
         {
             _mainWindow = mw;
 
             SelectedDate = DateTime.Now;
-            ClassItems = GeneralUtil.GetClasses();
-            AllRegisters = DataObjectsUtil.GenerateAllEmptyClassDataObjectses(ClassItems);
-            AllTimeTables = TimeTableUtil.GetAllEmptyTimeTables(ClassItems);
+            ClassItems = GeneralUtil.GetClasses ();
+            AllRegisters = DataObjectsUtil.GenerateAllEmptyClassDataObjectses (ClassItems, SelectedDate, SelectedDate.AddYears (1), WeekListItems);
+            AllTimeTables = TimeTableUtil.GetAllEmptyTimeTables (ClassItems);
 
-            FillRegisterButtonClickCommand = new DelegateCommand(FillRegisterButtonClick);
-            AddStudentCommand = new DelegateCommand(AddStudent);
-            AddTeacherCommand = new DelegateCommand(AddTeacher);
-            DeleteStudentCommand = new DelegateCommand(DeleteStudent);
-            DeleteTeacherCommand = new DelegateCommand(DeleteTeacher);
+            FillRegisterButtonClickCommand = new DelegateCommand (FillRegisterButtonClick);
+            AddStudentCommand = new DelegateCommand (AddStudent);
+            AddTeacherCommand = new DelegateCommand (AddTeacher);
+            DeleteStudentCommand = new DelegateCommand (DeleteStudent);
+            DeleteTeacherCommand = new DelegateCommand (DeleteTeacher);
 
-            Teachers = new List<Teacher>();
-            Students = new List<Student>();
-            SelectedClass = ClassItems.FirstOrDefault();
+            Teachers = new List<Teacher> ();
+            Students = new List<Student> ();
+            SelectedClass = ClassItems.FirstOrDefault ();
         }
 
         public ClassRegister RegisterOfCurrentClass
@@ -66,8 +70,13 @@ namespace LAS_Interface.UI
 
         public WeekDataObjects RegisterOfCurrentWeek
         {
-            get { return RegisterOfCurrentClass.WeekDataObjects[CurrentWeek]; }
-            set { RegisterOfCurrentClass.WeekDataObjects[CurrentWeek] = value; }
+            get { return RegisterOfCurrentClass.WeekDataObjects.FirstOrDefault(objects => objects.Week.Equals(CurrentWeek)); }
+            set
+            {
+                for (var i = 0; i < RegisterOfCurrentClass.WeekDataObjects.Count; i++)
+                    if (RegisterOfCurrentClass.WeekDataObjects[i].Week.Equals(CurrentWeek))
+                        RegisterOfCurrentClass.WeekDataObjects[i] = value;
+            }
         }
 
         public TimeTable TimeTableOfCurrentClass
@@ -83,23 +92,32 @@ namespace LAS_Interface.UI
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public void FillRegisterButtonClick(object param)
+        /// <summary>
+        /// The method to the FillRegister Button. Applies the Autofill to the register
+        /// </summary>
+        public void FillRegisterButtonClick (object param)
         {
-            AllRegisters = AutoFill.GetFilledRegisters(AllRegisters, AllTimeTables, Teachers);
-            PropertyChangedClass();
+            AllRegisters = AutoFill.GetFilledRegisters (AllRegisters, AllTimeTables, Teachers);
+            PropertyChangedClass ();
         }
 
-        public void AddStudent(object param)
+        /// <summary>
+        /// The method that is called when the option AddStudent is Selected in the ContextMenu of the Students list. Simply adds an empty student to the Students list
+        /// </summary>
+        public void AddStudent (object param)
         {
-            var temp = Students.ToList();
-            temp.Add(new Student("", SelectedClass));
+            var temp = Students.ToList ();
+            temp.Add (new Student ("", SelectedClass));
             Students = temp;
         }
 
-        public void AddTeacher(object param)
+        /// <summary>
+        /// The method that is called when the option AddTeacher  is Selected in the ContextMenu of the Teacher list. Simply adds an empty Teacher to the Teacher list
+        /// </summary>
+        public void AddTeacher (object param)
         {
-            var temp = Teachers.ToList();
-            temp.Add(new Teacher("",
+            var temp = Teachers.ToList ();
+            temp.Add (new Teacher ("",
                 new List<TeacherPropertiesForSpecificClass>
                 {
                     new TeacherPropertiesForSpecificClass(SelectedClass, false, new List<string>())
@@ -107,68 +125,90 @@ namespace LAS_Interface.UI
             Teachers = temp;
         }
 
-        public void DeleteStudent(object param)
+        /// <summary>
+        /// The method that is called when the option DeleteStudent is selected in the ContextMenu of the Studentslist - deletes the current selelcted Student
+        /// </summary>
+        public void DeleteStudent (object param)
         {
-            var temp = Students.ToList();
-            temp.Remove(temp.FirstOrDefault(
+            var temp = Students.ToList ();
+            temp.Remove (temp.FirstOrDefault (
                 student =>
-                    student.Class.Equals(SelectedClass) && student.StudentsView.Equals(SelectedStudent) &&
-                    student.Name.Equals(SelectedStudent.Name)));
+                    student.Class.Equals (SelectedClass) && student.StudentsView.Equals (SelectedStudent) &&
+                    student.Name.Equals (SelectedStudent.Name)));
             Students = temp;
         }
 
-        public void DeleteTeacher(object param)
+        /// <summary>
+        /// The method that is called when the option DeleteTeacher is selected in the ContextMenu of the Teacherslist - deletes the current selelcted Teacher
+        /// </summary>
+        public void DeleteTeacher (object param)
         {
-            var temp = Teachers.ToList();
+            var temp = Teachers.ToList ();
             var ct =
-                temp.FirstOrDefault(
+                temp.FirstOrDefault (
                     teacher =>
-                        teacher.Name.Equals(SelectedTeacher.Name) &&
-                        teacher.TeachersViews.Any(view => view.Equals(SelectedTeacher)) &&
-                        teacher.TeacherProperties.Any(
-                            c => c.Class.Equals(SelectedClass) && Equals(c.ClassTeacher, SelectedTeacher.ClassTeacher)));
-            ct?.TeacherProperties.Remove(ct.TeacherProperties.FirstOrDefault(c => c.Class.Equals(SelectedClass)));
+                        teacher.Name.Equals (SelectedTeacher.Name) &&
+                        teacher.TeachersViews.Any (view => view.Equals (SelectedTeacher)) &&
+                        teacher.TeacherProperties.Any (
+                            c => c.Class.Equals (SelectedClass) && Equals (c.ClassTeacher, SelectedTeacher.ClassTeacher)));
+            ct?.TeacherProperties.Remove (ct.TeacherProperties.FirstOrDefault (c => c.Class.Equals (SelectedClass)));
             Teachers = temp;
         }
 
         #region External Called Methods
 
-        public void OnMouseDoubleClick(object sender, MouseButtonEventArgs e, string clickedItem)
+        /// <summary>
+        /// This method can be used whenever the user doubleclicks an item in the MainWindow - which item the user clicked on is specified in the name parameter
+        /// </summary>
+        public void OnMouseDoubleClick (object sender, MouseButtonEventArgs e, string clickedItem)
         {
-            if (clickedItem.Equals(nameof(_mainWindow.ClassLabel)))
+            if (clickedItem.Equals (nameof (_mainWindow.ClassLabel)))
             {
-                var editClassesPopUpWindow = new EditClassesPopUpWindow(this);
-                editClassesPopUpWindow.InitializeComponent();
-                editClassesPopUpWindow.ShowDialog();
+                var editClassesPopUpWindow = new EditClassesPopUpWindow (this);
+                editClassesPopUpWindow.InitializeComponent ();
+                editClassesPopUpWindow.ShowDialog ();
             }
         }
 
         #endregion
 
-        public void PropertyChangedClass()
+        /// <summary>
+        /// Calls the OnPropertyChanged Method on all for class-changes relevant Properties
+        /// </summary>
+        public void PropertyChangedClass ()
         {
-            OnPropertyChanged(nameof(SelectedClass));
-            OnPropertyChanged(nameof(RegisterOfCurrentWeek));
-            OnPropertyChanged(nameof(RegisterDataObjectsMonday));
-            OnPropertyChanged(nameof(RegisterDataObjectsTuesday));
-            OnPropertyChanged(nameof(RegisterDataObjectsWednesday));
-            OnPropertyChanged(nameof(RegisterDataObjectsThursday));
-            OnPropertyChanged(nameof(RegisterDataObjectsFriday));
-            OnPropertyChanged(nameof(TimeTableForView));
-            OnPropertyChanged(nameof(TeachersViews));
-            OnPropertyChanged(nameof(StudentsViews));
-            OnPropertyChanged(nameof(Students));
-            OnPropertyChanged(nameof(Teachers));
+            OnPropertyChanged (nameof (SelectedClass));
+            OnPropertyChanged (nameof (RegisterOfCurrentWeek));
+            OnPropertyChanged (nameof (RegisterDataObjectsMonday));
+            OnPropertyChanged (nameof (RegisterDataObjectsTuesday));
+            OnPropertyChanged (nameof (RegisterDataObjectsWednesday));
+            OnPropertyChanged (nameof (RegisterDataObjectsThursday));
+            OnPropertyChanged (nameof (RegisterDataObjectsFriday));
+            OnPropertyChanged (nameof (TimeTableForView));
+            OnPropertyChanged (nameof (TeachersViews));
+            OnPropertyChanged (nameof (StudentsViews));
+            OnPropertyChanged (nameof (Students));
+            OnPropertyChanged (nameof (Teachers));
         }
 
-        protected void OnPropertyChanged(string name)
-            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        /// <summary>
+        /// Tells the view that a specific property has changed
+        /// </summary>
+        protected void OnPropertyChanged (string name)
+                    => PropertyChanged?.Invoke (this, new PropertyChangedEventArgs (name));
 
         #region External Variables -> Those four vars & the two other vars (SelectedDate & ClassItems) should be saved/loaded to/from the Data Source
 
+        /// <summary>
+        /// Contains all the registers (for every week) from all the classes
+        /// </summary>
+        /// <value>registers</value>
         public List<ClassRegister> AllRegisters { get; set; }
+        /// <summary>
+        /// Contains all the TimeTables for every class
+        /// </summary>
+        /// <value>The timeTables</value>
         public List<TimeTable> AllTimeTables { get; set; }
-
         public List<Teacher> Teachers
         {
             get { return _teachers; }
@@ -182,7 +222,6 @@ namespace LAS_Interface.UI
                 OnPropertyChanged(nameof(TeachersViews));
             }
         }
-
         public List<Student> Students
         {
             get { return _students; }
@@ -237,34 +276,42 @@ namespace LAS_Interface.UI
             }
         }
 
+        /// <summary>
+        /// The register Data for Friday - same for the other days
+        /// </summary>
+        /// <value>register Dataobjects</value>
         public List<DataObject> RegisterDataObjectsFriday
         {
             get { return RegisterOfCurrentWeek.Friday; }
             set
             {
                 RegisterOfCurrentWeek.Friday = value;
-                OnPropertyChanged(nameof(RegisterDataObjectsFriday));
+                OnPropertyChanged (nameof (RegisterDataObjectsFriday));
             }
         }
 
-        public List<string> ListItems
+        public List<string> WeekListItems
         {
-            get { return _listItems; }
+            get { return _weekListItems; }
             set
             {
-                _listItems = value;
-                OnPropertyChanged(nameof(ListItems));
+                _weekListItems = value;
+                OnPropertyChanged(nameof(WeekListItems));
             }
         }
 
-        public int CurrentWeek
+        /// <summary>
+        /// Represents the current selected Week as a string.
+        /// </summary>
+        /// <value>the week</value>
+        public string CurrentWeek
         {
             get { return _currentWeek; }
             set
             {
                 _currentWeek = value;
-                OnPropertyChanged(nameof(CurrentWeek));
-                PropertyChangedClass();
+                OnPropertyChanged (nameof (CurrentWeek));
+                PropertyChangedClass ();
             }
         }
 
@@ -278,13 +325,17 @@ namespace LAS_Interface.UI
             }
         }
 
+        /// <summary>
+        /// A list of current available classes
+        /// </summary>
+        /// <value>the classes</value>
         public List<string> ClassItems
         {
             get { return _classItems; }
             set
             {
                 _classItems = value;
-                OnPropertyChanged(nameof(ClassItems));
+                OnPropertyChanged (nameof (ClassItems));
             }
         }
 
@@ -352,7 +403,7 @@ namespace LAS_Interface.UI
             {
                 _selectedDate = value;
                 OnPropertyChanged(nameof(SelectedDate));
-                ListItems = TimeUtil.GetWeekList(SelectedDate, GeneralPublicStuff.WeeksPerYear);
+                WeekListItems = TimeUtil.GetWeekList(SelectedDate, TimeUtil.GetWeeksTillDate(value, value.AddYears(1)));
             }
         }
 
@@ -378,11 +429,19 @@ namespace LAS_Interface.UI
             }
         }
 
+        /// <summary>
+        /// Determines wether or not the DeleteStudent Option int the context menu for the students list is visible - it pretends on wether or not the user has selected a student
+        /// </summary>
+        /// <value>visibility for deletestudent option</value>
         public Visibility ContextMenuDeleteStudentItemVisibility
-            => SelectedStudent != null ? Visibility.Visible : Visibility.Collapsed;
+                    => SelectedStudent != null ? Visibility.Visible : Visibility.Collapsed;
 
+        /// <summary>
+        /// Determines wether or not the DeleteTeacher Option int the context menu for the teachers list is visible - it pretends on wether or not the user has selected a teacher
+        /// </summary>
+        /// <value>Visbility of DeleteTeacher option</value>
         public Visibility ContextMenuDeleteTeacherItemVisibility
-            => SelectedTeacher != null ? Visibility.Visible : Visibility.Collapsed;
+                    => SelectedTeacher != null ? Visibility.Visible : Visibility.Collapsed;
 
         #endregion
 
