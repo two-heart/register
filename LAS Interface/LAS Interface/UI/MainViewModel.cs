@@ -6,7 +6,6 @@ using System.Windows;
 using System.Windows.Input;
 using LAS_Interface.Automation;
 using LAS_Interface.ForeignStuff;
-using LAS_Interface.PublicStuff;
 using LAS_Interface.Types;
 using LAS_Interface.Types.Humans.Students;
 using LAS_Interface.Types.Humans.Teacher;
@@ -43,7 +42,7 @@ namespace LAS_Interface.UI
 
             SelectedDate = DateTime.Now;
             ClassItems = GeneralUtil.GetClasses ();
-            AllRegisters = DataObjectsUtil.GenerateAllEmptyClassDataObjectses (ClassItems, SelectedDate, SelectedDate.AddYears (1), WeekListItems);
+            AllRegisters = DataObjectsUtil.GenerateAllEmptyClassDataObjectses (ClassItems, WeekListItems);
             AllTimeTables = TimeTableUtil.GetAllEmptyTimeTables (ClassItems);
 
             FillRegisterButtonClickCommand = new DelegateCommand (FillRegisterButtonClick);
@@ -271,7 +270,6 @@ namespace LAS_Interface.UI
                 OnPropertyChanged(nameof(RegisterDataObjectsMonday));
             }
         }
-
         public List<DataObject> RegisterDataObjectsTuesday
         {
             get { return RegisterOfCurrentWeek.Tuesday; }
@@ -281,7 +279,6 @@ namespace LAS_Interface.UI
                 OnPropertyChanged(nameof(RegisterDataObjectsTuesday));
             }
         }
-
         public List<DataObject> RegisterDataObjectsWednesday
         {
             get { return RegisterOfCurrentWeek.Wednesday; }
@@ -291,7 +288,6 @@ namespace LAS_Interface.UI
                 OnPropertyChanged(nameof(RegisterDataObjectsWednesday));
             }
         }
-
         public List<DataObject> RegisterDataObjectsThursday
         {
             get { return RegisterOfCurrentWeek.Thursday; }
@@ -301,7 +297,6 @@ namespace LAS_Interface.UI
                 OnPropertyChanged(nameof(RegisterDataObjectsThursday));
             }
         }
-
         /// <summary>
         /// The register Data for Friday - same for the other days
         /// </summary>
@@ -315,7 +310,6 @@ namespace LAS_Interface.UI
                 OnPropertyChanged (nameof (RegisterDataObjectsFriday));
             }
         }
-
         /// <summary>
         /// All the possible weeks - this list gets updated by changing the date
         /// </summary>
@@ -329,7 +323,6 @@ namespace LAS_Interface.UI
                 OnPropertyChanged (nameof (WeekListItems));
             }
         }
-
         /// <summary>
         /// Represents the current selected Week as a string.
         /// </summary>
@@ -344,7 +337,6 @@ namespace LAS_Interface.UI
                 PropertyChangedClass ();
             }
         }
-
         /// <summary>
         /// It's simply the selected class as a string
         /// </summary>
@@ -358,7 +350,6 @@ namespace LAS_Interface.UI
                 PropertyChangedClass ();
             }
         }
-
         /// <summary>
         /// A list of current available classes
         /// </summary>
@@ -372,7 +363,6 @@ namespace LAS_Interface.UI
                 OnPropertyChanged (nameof (ClassItems));
             }
         }
-
         /// <summary>
         /// The view for the TimeTable - the thing the user sees/edits directly. It's just a table.
         /// </summary>
@@ -386,7 +376,6 @@ namespace LAS_Interface.UI
                 OnPropertyChanged (nameof (TimeTableForView));
             }
         }
-
         /// <summary>
         /// The equivalent view for the teachers. Contains things like name/class teacher/...
         /// </summary>
@@ -416,7 +405,6 @@ namespace LAS_Interface.UI
                 OnPropertyChanged (nameof (TeachersViews));
             }
         }
-
         /// <summary>
         /// The view for the studentslist - contains things like the name
         /// </summary>
@@ -441,7 +429,6 @@ namespace LAS_Interface.UI
                 OnPropertyChanged (nameof (StudentsViews));
             }
         }
-
         /// <summary>
         /// The picked Date from the DatePicker - it represents the cycle of the school year
         /// </summary>
@@ -456,7 +443,6 @@ namespace LAS_Interface.UI
                 WeekListItems = TimeUtil.GetWeekList (SelectedDate, TimeUtil.GetWeeksTillDate (value, value.AddYears (1)));
             }
         }
-
         /// <summary>
         /// The selected Student from the studentslist as a view object
         /// </summary>
@@ -471,7 +457,6 @@ namespace LAS_Interface.UI
                 OnPropertyChanged (nameof (ContextMenuDeleteStudentItemVisibility));
             }
         }
-
         /// <summary>
         /// The selected Teacher from the Teacherslist as a view object
         /// </summary>
@@ -486,14 +471,12 @@ namespace LAS_Interface.UI
                 OnPropertyChanged (nameof (ContextMenuDeleteTeacherItemVisibility));
             }
         }
-
         /// <summary>
         /// Determines wether or not the DeleteStudent Option int the context menu for the students list is visible - it pretends on wether or not the user has selected a student
         /// </summary>
         /// <value>visibility for deletestudent option</value>
         public Visibility ContextMenuDeleteStudentItemVisibility
                     => SelectedStudent != null ? Visibility.Visible : Visibility.Collapsed;
-
         /// <summary>
         /// Determines wether or not the DeleteTeacher Option int the context menu for the teachers list is visible - it pretends on wether or not the user has selected a teacher
         /// </summary>

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using LAS_Interface.Types;
 
 namespace LAS_Interface.Util
 {
@@ -23,5 +24,11 @@ namespace LAS_Interface.Util
         /// <returns>the string</returns>
         public static string ReturnFirstOrException (List<string> list, string exception)
                     => list.Count > 0 ? list[0] : exception;
+
+        public static List<WeekDataObjects> ReturnWithAddedRange(List<WeekDataObjects> list, IEnumerable<WeekDataObjects> range)
+        {
+            list.AddRange(range);
+            return list;
+        }
     }
 }
