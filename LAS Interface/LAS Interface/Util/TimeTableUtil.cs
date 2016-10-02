@@ -6,15 +6,23 @@ namespace LAS_Interface.Util
 {
     public class TimeTableUtil
     {
-        public static TimeTable GetEmptyTimeTable(string cclass)
+        /// <summary>
+        /// Gets one empty TimeTable for specific class
+        /// </summary>
+        /// <returns>the timeTable</returns>
+        public static TimeTable GetEmptyTimeTable (string cclass)
         {
-            var rows = new List<TimeTableRow>();
+            var rows = new List<TimeTableRow> ();
             for (var i = 0; i < 9; i++)
-                rows.Add(new TimeTableRow(i.ToString(), "", "", "", "", ""));
-            return new TimeTable(rows, cclass);
+                rows.Add (new TimeTableRow (i.ToString (), "", "", "", "", ""));
+            return new TimeTable (rows, cclass);
         }
 
-        public static List<TimeTable> GetAllEmptyTimeTables(List<string> classes)
-            => classes.Select(GetEmptyTimeTable).ToList();
+        /// <summary>
+        /// Gets empty timeTables for every class
+        /// </summary>
+        /// <returns>empty timeTables</returns>
+        public static List<TimeTable> GetAllEmptyTimeTables (List<string> classes)
+                    => classes.Select (GetEmptyTimeTable).ToList ();
     }
 }

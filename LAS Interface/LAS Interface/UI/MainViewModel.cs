@@ -18,6 +18,9 @@ namespace LAS_Interface.UI
     public class MainViewModel : INotifyPropertyChanged
     {
         private readonly MainWindow _mainWindow;
+        /// <summary>
+        /// see public "brothers"
+        /// </summary>
         private List<string> _classItems;
         private string _currentWeek;
 
@@ -54,42 +57,57 @@ namespace LAS_Interface.UI
             SelectedClass = ClassItems.FirstOrDefault ();
         }
 
+        /// <summary>
+        /// The register (With all the weeks) of the selected Class
+        /// </summary>
+        /// <value>The classregister</value>
         public ClassRegister RegisterOfCurrentClass
         {
             get
             {
-                return AllRegisters.FirstOrDefault(classDataObjectse => classDataObjectse.Class.Equals(SelectedClass));
+                return AllRegisters.FirstOrDefault (classDataObjectse => classDataObjectse.Class.Equals (SelectedClass));
             }
             set
             {
                 for (var i = 0; i < AllRegisters.Count; i++)
-                    if (AllRegisters[i].Class.Equals(SelectedClass))
+                    if (AllRegisters[i].Class.Equals (SelectedClass))
                         AllRegisters[i] = value;
             }
         }
 
+        /// <summary>
+        /// The register of the current selected week of the selected class with all the days from the week
+        /// </summary>
+        /// <value>the weekdata</value>
         public WeekDataObjects RegisterOfCurrentWeek
         {
-            get { return RegisterOfCurrentClass.WeekDataObjects.FirstOrDefault(objects => objects.Week.Equals(CurrentWeek)); }
+            get { return RegisterOfCurrentClass.WeekDataObjects.FirstOrDefault (objects => objects.Week.Equals (CurrentWeek)); }
             set
             {
                 for (var i = 0; i < RegisterOfCurrentClass.WeekDataObjects.Count; i++)
-                    if (RegisterOfCurrentClass.WeekDataObjects[i].Week.Equals(CurrentWeek))
+                    if (RegisterOfCurrentClass.WeekDataObjects[i].Week.Equals (CurrentWeek))
                         RegisterOfCurrentClass.WeekDataObjects[i] = value;
             }
         }
 
+        /// <summary>
+        /// The TimeTable you can work with - the user does not directly see this.
+        /// </summary>
+        /// <value>The timetable</value>
         public TimeTable TimeTableOfCurrentClass
         {
-            get { return AllTimeTables.FirstOrDefault(timeTable => timeTable.Class.Equals(SelectedClass)); }
+            get { return AllTimeTables.FirstOrDefault (timeTable => timeTable.Class.Equals (SelectedClass)); }
             set
             {
                 for (var i = 0; i < AllTimeTables.Count; i++)
-                    if (AllTimeTables[i].Class.Equals(SelectedClass))
+                    if (AllTimeTables[i].Class.Equals (SelectedClass))
                         AllTimeTables[i] = value;
             }
         }
 
+        /// <summary>
+        /// The event for the property-changing. Is just used for the view, that this know, that something has changed
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
@@ -209,26 +227,34 @@ namespace LAS_Interface.UI
         /// </summary>
         /// <value>The timeTables</value>
         public List<TimeTable> AllTimeTables { get; set; }
+        /// <summary>
+        /// All the teachers for the teacherslist. Gets updated by adding/deleting a student
+        /// </summary>
+        /// <value>the teachers</value>
         public List<Teacher> Teachers
         {
             get { return _teachers; }
             set
             {
                 if ((value != null) && (value.Count > 0))
-                    foreach (var teacher in value.ToList())
+                    foreach (var teacher in value.ToList ())
                         if (teacher.TeacherProperties?.Count <= 0)
-                            value.Remove(teacher);
+                            value.Remove (teacher);
                 _teachers = value;
-                OnPropertyChanged(nameof(TeachersViews));
+                OnPropertyChanged (nameof (TeachersViews));
             }
         }
+        /// <summary>
+        /// All the students for the studentslist. Gets updated by adding/deleting a student
+        /// </summary>
+        /// <value>the students</value>
         public List<Student> Students
         {
             get { return _students; }
             set
             {
                 _students = value;
-                OnPropertyChanged(nameof(StudentsViews));
+                OnPropertyChanged (nameof (StudentsViews));
             }
         }
 
@@ -290,13 +316,17 @@ namespace LAS_Interface.UI
             }
         }
 
+        /// <summary>
+        /// All the possible weeks - this list gets updated by changing the date
+        /// </summary>
+        /// <value>the Weeks</value>
         public List<string> WeekListItems
         {
             get { return _weekListItems; }
             set
             {
                 _weekListItems = value;
-                OnPropertyChanged(nameof(WeekListItems));
+                OnPropertyChanged (nameof (WeekListItems));
             }
         }
 
@@ -315,13 +345,17 @@ namespace LAS_Interface.UI
             }
         }
 
+        /// <summary>
+        /// It's simply the selected class as a string
+        /// </summary>
+        /// <value>the selected class</value>
         public string SelectedClass
         {
             get { return _selectedClass; }
             set
             {
                 _selectedClass = value;
-                PropertyChangedClass();
+                PropertyChangedClass ();
             }
         }
 
@@ -339,24 +373,32 @@ namespace LAS_Interface.UI
             }
         }
 
+        /// <summary>
+        /// The view for the TimeTable - the thing the user sees/edits directly. It's just a table.
+        /// </summary>
+        /// <value>The TimeTable</value>
         public List<TimeTableRow> TimeTableForView
         {
             get { return TimeTableOfCurrentClass.TimeTableRows; }
             set
             {
                 TimeTableOfCurrentClass.TimeTableRows = value;
-                OnPropertyChanged(nameof(TimeTableForView));
+                OnPropertyChanged (nameof (TimeTableForView));
             }
         }
 
+        /// <summary>
+        /// The equivalent view for the teachers. Contains things like name/class teacher/...
+        /// </summary>
+        /// <value>the teachers views</value>
         public List<TeachersView> TeachersViews
         {
             get
             {
                 return
-                    Teachers.SelectMany(
-                            teacher => teacher.TeachersViews.Where(view => view.Class.Equals(SelectedClass)).ToList())
-                        .ToList();
+                    Teachers.SelectMany (
+                            teacher => teacher.TeachersViews.Where (view => view.Class.Equals (SelectedClass)).ToList ())
+                        .ToList ();
             }
             set //Don't add TeachersViews - Always add Teachers!
             {
@@ -365,67 +407,83 @@ namespace LAS_Interface.UI
                     Teachers[i].Name = value[i].Name;
                     foreach (var t in Teachers[i].TeacherProperties)
                     {
-                        if (!t.Class.Equals(SelectedClass))
+                        if (!t.Class.Equals (SelectedClass))
                             continue;
-                        t.Subjects = value[i].Subjects.Split(',').ToList();
+                        t.Subjects = value[i].Subjects.Split (',').ToList ();
                         t.ClassTeacher = value[i].ClassTeacher;
                     }
                 }
-                OnPropertyChanged(nameof(TeachersViews));
+                OnPropertyChanged (nameof (TeachersViews));
             }
         }
 
+        /// <summary>
+        /// The view for the studentslist - contains things like the name
+        /// </summary>
+        /// <value>the studentsviews</value>
         public List<StudentsView> StudentsViews
         {
             get
             {
                 return
-                    Students.Where(student => student.Class.Equals(SelectedClass))
-                        .Select(student => student.StudentsView)
-                        .ToList();
+                    Students.Where (student => student.Class.Equals (SelectedClass))
+                        .Select (student => student.StudentsView)
+                        .ToList ();
             }
             set //see at TeachersView
             {
                 for (var i = 0; i < Students.Count; i++)
-                    if (Students[i].Class.Equals(SelectedClass))
+                    if (Students[i].Class.Equals (SelectedClass))
                     {
                         Students[i].Name = value[i].Name;
                         Students[i].StudentsView.Name = value[i].Name;
                     }
-                OnPropertyChanged(nameof(StudentsViews));
+                OnPropertyChanged (nameof (StudentsViews));
             }
         }
 
+        /// <summary>
+        /// The picked Date from the DatePicker - it represents the cycle of the school year
+        /// </summary>
+        /// <value>the date</value>
         public DateTime SelectedDate //TODO Handle Runtime Changed Date
         {
             get { return _selectedDate; }
             set
             {
                 _selectedDate = value;
-                OnPropertyChanged(nameof(SelectedDate));
-                WeekListItems = TimeUtil.GetWeekList(SelectedDate, TimeUtil.GetWeeksTillDate(value, value.AddYears(1)));
+                OnPropertyChanged (nameof (SelectedDate));
+                WeekListItems = TimeUtil.GetWeekList (SelectedDate, TimeUtil.GetWeeksTillDate (value, value.AddYears (1)));
             }
         }
 
+        /// <summary>
+        /// The selected Student from the studentslist as a view object
+        /// </summary>
+        /// <value>the student</value>
         public StudentsView SelectedStudent
         {
             get { return _selectedStudent; }
             set
             {
                 _selectedStudent = value;
-                OnPropertyChanged(nameof(SelectedStudent));
-                OnPropertyChanged(nameof(ContextMenuDeleteStudentItemVisibility));
+                OnPropertyChanged (nameof (SelectedStudent));
+                OnPropertyChanged (nameof (ContextMenuDeleteStudentItemVisibility));
             }
         }
 
+        /// <summary>
+        /// The selected Teacher from the Teacherslist as a view object
+        /// </summary>
+        /// <value>the teacher</value>
         public TeachersView SelectedTeacher
         {
             get { return _selectedTeacher; }
             set
             {
                 _selectedTeacher = value;
-                OnPropertyChanged(nameof(SelectedTeacher));
-                OnPropertyChanged(nameof(ContextMenuDeleteTeacherItemVisibility));
+                OnPropertyChanged (nameof (SelectedTeacher));
+                OnPropertyChanged (nameof (ContextMenuDeleteTeacherItemVisibility));
             }
         }
 

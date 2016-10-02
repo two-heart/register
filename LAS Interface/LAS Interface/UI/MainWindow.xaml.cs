@@ -9,16 +9,26 @@ namespace LAS_Interface.UI
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        /// <summary>
+        /// Initializes the MainWindow - so it initializes literally everything
+        /// </summary>
+        /// <returns>nothing</returns>
+        public MainWindow ()
         {
-            DataContext = new MainViewModel(this);
-            InitializeComponent();
+            DataContext = new MainViewModel (this);
+            InitializeComponent ();
         }
 
-        private void TeacherDataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
-            => e.Cancel = e.PropertyName == "Class";
+        /// <summary>
+        /// This is there to prevent the auto-generate table from generating a class column
+        /// </summary>
+        private void TeacherDataGrid_AutoGeneratingColumn (object sender, DataGridAutoGeneratingColumnEventArgs e)
+                    => e.Cancel = e.PropertyName == "Class";
 
-        private void ClassLabel_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
-            => ((MainViewModel) DataContext).OnMouseDoubleClick(sender, e, nameof(ClassLabel));
+        /// <summary>
+        /// This method is called when the class-label is clicked and calls the OnDoubleClick Method from the MainViewModel
+        /// </summary>
+        private void ClassLabel_OnMouseDoubleClick (object sender, MouseButtonEventArgs e)
+                    => ((MainViewModel) DataContext).OnMouseDoubleClick (sender, e, nameof (ClassLabel));
     }
 }

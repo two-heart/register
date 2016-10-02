@@ -6,14 +6,22 @@ namespace LAS_Interface.Util
 {
     public class TimeUtil
     {
-        public static List<string> GetWeekList()
+        /// <summary>
+        /// Gets the weekList for specified Count
+        /// </summary>
+        /// <returns>the weeklist</returns>
+        public static List<string> GetWeekList ()
         {
-            var fin = new List<string>();
+            var fin = new List<string> ();
             for (var i = 1; i <= Resources.WeeksPerYear; i++)
-                fin.Add("KW: " + i);
+                fin.Add ("KW: " + i);
             return fin;
         }
 
+        /// <summary>
+        /// Gets a weekList for specified area
+        /// </summary>
+        /// <returns>the weeklist</returns>
         public static List<string> GetWeekList(DateTime beginning, int weekCount)
         {
             var fin = new List<string>();
@@ -27,17 +35,25 @@ namespace LAS_Interface.Util
             return fin;
         }
 
-        public static DateTime GetNextMonday(DateTime now)
+        /// <summary>
+        /// Gets the next monday from given date on
+        /// </summary>
+        /// <returns>next MondayDate</returns>
+        public static DateTime GetNextMonday (DateTime now)
         {
             while (now.DayOfWeek != DayOfWeek.Monday)
-                now = now.AddDays(1);
+                now = now.AddDays (1);
             return now;
         }
 
-        public static int GetWeeksTillDate(DateTime now, DateTime end)
+        /// <summary>
+        /// Gets the count of the weeks till the specified date
+        /// </summary>
+        /// <returns>the count</returns>
+        public static int GetWeeksTillDate (DateTime now, DateTime end)
         {
             var fin = 0;
-            for (; now < end; now = now.AddDays(7))
+            for (; now < end; now = now.AddDays (7))
                 fin++;
             return fin;
         }

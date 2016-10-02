@@ -72,7 +72,7 @@
   <Class Name="LAS_Interface.Types.WeekDataObjects" Collapsed="true">
     <Position X="5.75" Y="4.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAQAAIAACAAAAAAAAAAACAAIAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAQAAIAACAAAAAAAAAAACAAIAAAAAAAAAAAAIAAAAA=</HashCode>
       <FileName>Types\WeekDataObjects.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -130,7 +130,7 @@
   <Class Name="LAS_Interface.UI.MainViewModel" Collapsed="true" BaseTypeListCollapsed="true">
     <Position X="0.5" Y="2.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>RYIAkCMAAEYSQkA0IQwDAEBAgACAYoAIgQINAgQAIgA=</HashCode>
+      <HashCode>RYIAkCMAAEYSQkg0IAwDAABAgACAYoAIgQINAgQAIgA=</HashCode>
       <FileName>UI\MainViewModel.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
