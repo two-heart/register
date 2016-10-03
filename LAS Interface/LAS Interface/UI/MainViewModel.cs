@@ -35,30 +35,30 @@ namespace LAS_Interface.UI
         private List<TimeTable> _allTimeTables;
         private List<TimeTableRow> _timeTableForView;
         private TimeTable _timeTableOfCurrentClass;
+        private List<TeachersView> _teachersViews;
+        private List<StudentsView> _studentsViews;
 
         /// <summary>
         /// Initializes the MainViewModel - the ViewModel to the MainWindow - so literally everything
         /// </summary>
         /// <returns>nothing</returns>
         public MainViewModel (MainWindow mw)
-        //TODO Handle Runtime Changed Date
         {
             _mainWindow = mw;
+            Teachers = new List<Teacher> ();
+            Students = new List<Student> ();
 
             SelectedDate = DateTime.Now;
             ClassItems = GeneralUtil.GetClasses ();
+            AllTimeTables = TimeTableUtil.GetAllEmptyTimeTables (ClassItems);
             SelectedClass = ClassItems.FirstOrDefault ();
             AllRegisters = DataObjectsUtil.GenerateAllEmptyClassDataObjectses (ClassItems, WeekListItems);
-            AllTimeTables = TimeTableUtil.GetAllEmptyTimeTables (ClassItems);
 
             FillRegisterButtonClickCommand = new DelegateCommand (FillRegisterButtonClick);
             AddStudentCommand = new DelegateCommand (AddStudent);
             AddTeacherCommand = new DelegateCommand (AddTeacher);
             DeleteStudentCommand = new DelegateCommand (DeleteStudent);
             DeleteTeacherCommand = new DelegateCommand (DeleteTeacher);
-
-            Teachers = new List<Teacher> ();
-            Students = new List<Student> ();
         }
 
         #region External Variables -> Those four vars & the two other vars (SelectedDate & ClassItems) should be saved/loaded to/from the Data Source
@@ -90,11 +90,22 @@ namespace LAS_Interface.UI
             get { return _teachers; }
             set
             {
-                if ((value != null) && (value.Count > 0))
+                if (value == null)
+                {
+                    _teachers = value;
+                    TeachersViews = null;
+                    OnPropertyChanged (nameof (TeachersViews));
+                    return;
+                }
+                if ((value.Count > 0))
                     foreach (var teacher in value.ToList ())
                         if (teacher.TeacherProperties?.Count <= 0)
                             value.Remove (teacher);
                 _teachers = value;
+                TeachersViews =
+                    value.SelectMany (
+                            teacher => teacher.TeachersViews.Where (view => view.Class.Equals (SelectedClass)).ToList ())
+                        .ToList ();
                 OnPropertyChanged (nameof (TeachersViews));
             }
         }
@@ -108,11 +119,17 @@ namespace LAS_Interface.UI
             set
             {
                 _students = value;
+                StudentsViews =
+                    value.Where (student => student.Class.Equals (SelectedClass))
+                        .Select (student => student.StudentsView)
+                        .ToList ();
                 OnPropertyChanged (nameof (StudentsViews));
             }
         }
 
         #endregion //Don't forget the SelectedDate & the ClassItems!
+
+        #region Indirectly bound Methods
 
         /// <summary>
         /// The register (With all the weeks) of the selected Class
@@ -157,29 +174,29 @@ namespace LAS_Interface.UI
             set
             {
                 _timeTableOfCurrentClass = value;
-                if(AllTimeTables == null)
+                if (AllTimeTables == null)
                     return;
                 for (var i = 0; i < -_allTimeTables.Count; i++)
                 {
-                    if (!_allTimeTables[i].Class.Equals(SelectedClass)) continue;
+                    if (!_allTimeTables[i].Class.Equals (SelectedClass))
+                        continue;
                     var newDifferentTimeTable =
-                        value.TimeTableRows.Where ((row, count) => !row.Time.Equals(AllTimeTables[i].TimeTableRows[count].Time)).ToList ();
+                        value.TimeTableRows.Where ((row, count) => !row.Time.Equals (AllTimeTables[i].TimeTableRows[count].Time)).ToList ();
                     if (newDifferentTimeTable.Count > 0)
                     {
-                        var newTimeList = newDifferentTimeTable.Select(row => row.Time).ToList();
-                        AllTimeTables = TimeTableUtil.GetTimeTablesWithUpdatedTime(AllTimeTables, newTimeList);
+                        var newTimeList = newDifferentTimeTable.Select (row => row.Time).ToList ();
+                        AllTimeTables = TimeTableUtil.GetTimeTablesWithUpdatedTime (AllTimeTables, newTimeList);
                     }
                     AllTimeTables[i] = value;
                 }
                 TimeTableForView = TimeTableOfCurrentClass.TimeTableRows;
-                OnPropertyChanged (nameof(TimeTableForView));
+                OnPropertyChanged (nameof (TimeTableForView));
             }
         }
 
-        /// <summary>
-        /// The event for the property-changing. Is just used for the view, that this know, that something has changed
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+        #endregion
+
+        #region MethodsToCommands
 
         /// <summary>
         /// The method to the FillRegister Button. Applies the Autofill to the register
@@ -244,6 +261,8 @@ namespace LAS_Interface.UI
             Teachers = temp;
         }
 
+        #endregion
+
         #region External Called Methods
 
         /// <summary>
@@ -259,13 +278,27 @@ namespace LAS_Interface.UI
             }
         }
 
+        public void TimeTableChanged (object sender, EventArgs e)
+        {
+            TimeTableOfCurrentClass.TimeTableRows = TimeTableForView;
+            TimeTableOfCurrentClass = TimeTableOfCurrentClass;
+        }
+
+        public void TeachersListChanged (object sender, EventArgs e) => TeachersViews = TeachersViews;
+
+        public void StudentsListChanged(object sender, EventArgs e) => StudentsViews = StudentsViews;
+
         #endregion
+
+        #region PropertiesChanging
 
         /// <summary>
         /// Calls the OnPropertyChanged Method on all for class-changes relevant Properties
         /// </summary>
         public void PropertyChangedClass ()
         {
+            Students = Students;
+            Teachers = Teachers;
             OnPropertyChanged (nameof (SelectedClass));
             OnPropertyChanged (nameof (RegisterOfCurrentWeek));
             OnPropertyChanged (nameof (RegisterDataObjectsMonday));
@@ -286,12 +319,13 @@ namespace LAS_Interface.UI
         protected void OnPropertyChanged (string name)
                     => PropertyChanged?.Invoke (this, new PropertyChangedEventArgs (name));
 
-        public void TimeTableChanged(object sender, EventArgs e)
-        {
-            TimeTableOfCurrentClass.TimeTableRows = TimeTableForView;
-            TimeTableOfCurrentClass = TimeTableOfCurrentClass;
-        }
-        
+        /// <summary>
+        /// The event for the property-changing. Is just used for the view, that this know, that something has changed
+        /// </summary>
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        #endregion
+
         #region BoundVariables
 
         public List<DataObject> RegisterDataObjectsMonday
@@ -300,7 +334,7 @@ namespace LAS_Interface.UI
             set
             {
                 RegisterOfCurrentWeek.Monday = value;
-                OnPropertyChanged(nameof(RegisterDataObjectsMonday));
+                OnPropertyChanged (nameof (RegisterDataObjectsMonday));
             }
         }
         public List<DataObject> RegisterDataObjectsTuesday
@@ -309,7 +343,7 @@ namespace LAS_Interface.UI
             set
             {
                 RegisterOfCurrentWeek.Tuesday = value;
-                OnPropertyChanged(nameof(RegisterDataObjectsTuesday));
+                OnPropertyChanged (nameof (RegisterDataObjectsTuesday));
             }
         }
         public List<DataObject> RegisterDataObjectsWednesday
@@ -318,7 +352,7 @@ namespace LAS_Interface.UI
             set
             {
                 RegisterOfCurrentWeek.Wednesday = value;
-                OnPropertyChanged(nameof(RegisterDataObjectsWednesday));
+                OnPropertyChanged (nameof (RegisterDataObjectsWednesday));
             }
         }
         public List<DataObject> RegisterDataObjectsThursday
@@ -327,9 +361,10 @@ namespace LAS_Interface.UI
             set
             {
                 RegisterOfCurrentWeek.Thursday = value;
-                OnPropertyChanged(nameof(RegisterDataObjectsThursday));
+                OnPropertyChanged (nameof (RegisterDataObjectsThursday));
             }
         }
+
         /// <summary>
         /// The register Data for Friday - same for the other days
         /// </summary>
@@ -343,6 +378,7 @@ namespace LAS_Interface.UI
                 OnPropertyChanged (nameof (RegisterDataObjectsFriday));
             }
         }
+
         /// <summary>
         /// All the possible weeks - this list gets updated by changing the date
         /// </summary>
@@ -356,6 +392,7 @@ namespace LAS_Interface.UI
                 OnPropertyChanged (nameof (WeekListItems));
             }
         }
+
         /// <summary>
         /// Represents the current selected Week as a string.
         /// </summary>
@@ -370,6 +407,7 @@ namespace LAS_Interface.UI
                 PropertyChangedClass ();
             }
         }
+
         /// <summary>
         /// It's simply the selected class as a string
         /// </summary>
@@ -383,6 +421,7 @@ namespace LAS_Interface.UI
                 PropertyChangedClass ();
             }
         }
+
         /// <summary>
         /// A list of current available classes
         /// </summary>
@@ -407,7 +446,7 @@ namespace LAS_Interface.UI
             set
             {
                 _timeTableForView = value;
-                OnPropertyChanged(nameof(TimeTableForView));
+                OnPropertyChanged (nameof (TimeTableForView));
             }
         }
 
@@ -417,44 +456,36 @@ namespace LAS_Interface.UI
         /// <value>the teachers views</value>
         public List<TeachersView> TeachersViews
         {
-            get
-            {
-                return
-                    Teachers.SelectMany (
-                            teacher => teacher.TeachersViews.Where (view => view.Class.Equals (SelectedClass)).ToList ())
-                        .ToList ();
-            }
+            get { return _teachersViews; }
             set //Don't add TeachersViews - Always add Teachers!
             {
+                _teachersViews = value;
                 for (var i = 0; i < Teachers.Count; i++)
                 {
                     Teachers[i].Name = value[i].Name;
                     foreach (var t in Teachers[i].TeacherProperties)
                     {
-                        if (!t.Class.Equals (SelectedClass))
+                        if (!t.Class.Equals (SelectedClass) || value[i] == null)
                             continue;
-                        t.Subjects = value[i].Subjects.Split (',').ToList ();
+                        if (value[i].Subjects != null)
+                            t.Subjects = value[i].Subjects.Split (',').ToList ();
                         t.ClassTeacher = value[i].ClassTeacher;
                     }
                 }
                 OnPropertyChanged (nameof (TeachersViews));
             }
         }
+
         /// <summary>
         /// The view for the studentslist - contains things like the name
         /// </summary>
         /// <value>the studentsviews</value>
         public List<StudentsView> StudentsViews
         {
-            get
-            {
-                return
-                    Students.Where (student => student.Class.Equals (SelectedClass))
-                        .Select (student => student.StudentsView)
-                        .ToList ();
-            }
+            get { return _studentsViews; }
             set //see at TeachersView
             {
+                _studentsViews = value;
                 for (var i = 0; i < Students.Count; i++)
                     if (Students[i].Class.Equals (SelectedClass))
                     {
@@ -464,11 +495,12 @@ namespace LAS_Interface.UI
                 OnPropertyChanged (nameof (StudentsViews));
             }
         }
+
         /// <summary>
         /// The picked Date from the DatePicker - it represents the cycle of the school year
         /// </summary>
         /// <value>the date</value>
-        public DateTime SelectedDate //TODO Handle Runtime Changed Date
+        public DateTime SelectedDate
         {
             get { return _selectedDate; }
             set
@@ -476,10 +508,11 @@ namespace LAS_Interface.UI
                 _selectedDate = value;
                 OnPropertyChanged (nameof (SelectedDate));
                 WeekListItems = TimeUtil.GetWeekList (SelectedDate, TimeUtil.GetWeeksTillDate (value, value.AddYears (1)));
-                AllRegisters = DataObjectsUtil.GenerateLeftEmptyClassDataObjectses(ClassItems, WeekListItems,
+                AllRegisters = DataObjectsUtil.GenerateLeftEmptyClassDataObjectses (ClassItems, WeekListItems,
                     AllRegisters, Resources.EntriesPerDay);
             }
         }
+
         /// <summary>
         /// The selected Student from the studentslist as a view object
         /// </summary>
@@ -494,6 +527,7 @@ namespace LAS_Interface.UI
                 OnPropertyChanged (nameof (ContextMenuDeleteStudentItemVisibility));
             }
         }
+
         /// <summary>
         /// The selected Teacher from the Teacherslist as a view object
         /// </summary>
@@ -508,12 +542,14 @@ namespace LAS_Interface.UI
                 OnPropertyChanged (nameof (ContextMenuDeleteTeacherItemVisibility));
             }
         }
+
         /// <summary>
         /// Determines wether or not the DeleteStudent Option int the context menu for the students list is visible - it pretends on wether or not the user has selected a student
         /// </summary>
         /// <value>visibility for deletestudent option</value>
         public Visibility ContextMenuDeleteStudentItemVisibility
                     => SelectedStudent != null ? Visibility.Visible : Visibility.Collapsed;
+
         /// <summary>
         /// Determines wether or not the DeleteTeacher Option int the context menu for the teachers list is visible - it pretends on wether or not the user has selected a teacher
         /// </summary>

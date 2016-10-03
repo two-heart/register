@@ -140,7 +140,8 @@
                                       AutoGenerateColumns="True"
                                       Name="TeacherDataGrid"
                                       AutoGeneratingColumn="TeacherDataGrid_AutoGeneratingColumn"
-                                      SelectedItem="{Binding SelectedTeacher, UpdateSourceTrigger=PropertyChanged}">
+                                      SelectedItem="{Binding SelectedTeacher, UpdateSourceTrigger=PropertyChanged}"
+                                      CurrentCellChanged="TeacherDataGrid_OnCurrentCellChanged">
                                 <DataGrid.ContextMenu>
                                     <ContextMenu>
                                         <MenuItem Command="{Binding AddTeacherCommand}"
@@ -165,7 +166,8 @@
                             <DataGrid ItemsSource="{Binding StudentsViews, UpdateSourceTrigger=PropertyChanged}"
                                       AutoGenerateColumns="True"
                                       Name="StudentsDataGrid"
-                                      SelectedItem="{Binding SelectedStudent, UpdateSourceTrigger=PropertyChanged}">
+                                      SelectedItem="{Binding SelectedStudent, UpdateSourceTrigger=PropertyChanged}"
+                                      CurrentCellChanged="StudentsDataGrid_OnCurrentCellChanged">
                                 <DataGrid.ContextMenu>
                                     <ContextMenu>
                                         <MenuItem Command="{Binding AddStudentCommand}"

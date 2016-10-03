@@ -34,5 +34,10 @@ namespace LAS_Interface.UI
 
         private void DataGrid_OnCurrentCellChanged(object sender, EventArgs e)
             => ((MainViewModel) DataContext).TimeTableChanged(sender, e);
+
+        private void TeacherDataGrid_OnCurrentCellChanged(object sender, EventArgs e)
+            => ((MainViewModel) DataContext).TeachersListChanged(sender, e);
+
+        private void StudentsDataGrid_OnCurrentCellChanged(object sender, EventArgs e) => ((MainViewModel)DataContext).StudentsListChanged(sender, e);
     }
 }
