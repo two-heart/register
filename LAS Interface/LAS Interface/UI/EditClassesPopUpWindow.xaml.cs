@@ -18,6 +18,9 @@ namespace LAS_Interface.UI
             DataContext = new EditClassesViewModel (this, mvm);
         }
 
+        /// <summary>
+        /// Is called when the user presses a key
+        /// </summary>
         private void Window_KeyUp (object sender, KeyEventArgs e)
         {
 

@@ -52,14 +52,18 @@ namespace LAS_Interface.UI
             }
         }
 
+        /// <summary>
+        /// The currently selected Class of the list
+        /// </summary>
+        /// <value>the class</value>
         public Mstring SelectedClass
         {
             get { return _selectedClass; }
             set
             {
                 _selectedClass = value;
-                OnPropertyChanged(nameof(SelectedClass));
-                OnPropertyChanged(nameof(IsRemoveButtonEnabled));
+                OnPropertyChanged (nameof (SelectedClass));
+                OnPropertyChanged (nameof (IsRemoveButtonEnabled));
             }
         }
 
@@ -88,7 +92,10 @@ namespace LAS_Interface.UI
             SelectedClass = n;
         }
 
-        public void RemoveButtonClick(object param)
+        /// <summary>
+        /// Is called when the user presses the remove button and removes the currently selected Item
+        /// </summary>
+        public void RemoveButtonClick (object param)
         {
             ClassItems.Remove (SelectedClass);
             ClassItems = new List<Mstring> (ClassItems);
@@ -100,10 +107,13 @@ namespace LAS_Interface.UI
         protected void OnPropertyChanged (string name)
                     => PropertyChanged?.Invoke (this, new PropertyChangedEventArgs (name));
 
-        public void OnKeyPress(object sender, KeyEventArgs e)
+        /// <summary>
+        /// Is called from the code behind (when the user presses a key)
+        /// </summary>
+        public void OnKeyPress (object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Delete && SelectedClass != null)
-                RemoveButtonClick(null);
+                RemoveButtonClick (null);
         }
     }
 }

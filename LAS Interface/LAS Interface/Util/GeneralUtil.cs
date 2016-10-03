@@ -25,9 +25,13 @@ namespace LAS_Interface.Util
         public static string ReturnFirstOrException (List<string> list, string exception)
                     => list.Count > 0 ? list[0] : exception;
 
-        public static List<WeekDataObjects> ReturnWithAddedRange(List<WeekDataObjects> list, IEnumerable<WeekDataObjects> range)
+        /// <summary>
+        /// Adds the range and returns the new list
+        /// </summary>
+        /// <returns>the new list</returns>
+        public static List<WeekDataObjects> ReturnWithAddedRange (List<WeekDataObjects> list, IEnumerable<WeekDataObjects> range)
         {
-            list.AddRange(range);
+            list.AddRange (range);
             return list;
         }
     }

@@ -32,12 +32,21 @@ namespace LAS_Interface.UI
         private void ClassLabel_OnMouseDoubleClick (object sender, MouseButtonEventArgs e)
                     => ((MainViewModel) DataContext).OnMouseDoubleClick (sender, e, nameof (ClassLabel));
 
-        private void DataGrid_OnCurrentCellChanged(object sender, EventArgs e)
-            => ((MainViewModel) DataContext).TimeTableChanged(sender, e);
+        /// <summary>
+        /// Is called whenever a cell of the timeTable changed
+        /// </summary>
+        private void DataGrid_OnCurrentCellChanged (object sender, EventArgs e)
+                    => ((MainViewModel) DataContext).TimeTableChanged (sender, e);
 
-        private void TeacherDataGrid_OnCurrentCellChanged(object sender, EventArgs e)
-            => ((MainViewModel) DataContext).TeachersListChanged(sender, e);
+        /// <summary>
+        /// Is called whenever the teachers list is changed
+        /// </summary>
+        private void TeacherDataGrid_OnCurrentCellChanged (object sender, EventArgs e)
+                    => ((MainViewModel) DataContext).TeachersListChanged (sender, e);
 
-        private void StudentsDataGrid_OnCurrentCellChanged(object sender, EventArgs e) => ((MainViewModel)DataContext).StudentsListChanged(sender, e);
+        /// <summary>
+        /// Is called whenever the students List is changed
+        /// </summary>
+        private void StudentsDataGrid_OnCurrentCellChanged (object sender, EventArgs e) => ((MainViewModel) DataContext).StudentsListChanged (sender, e);
     }
 }

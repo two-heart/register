@@ -24,7 +24,6 @@ namespace LAS_Interface.UI
         /// </summary>
         private List<string> _classItems;
         private string _currentWeek;
-
         private List<string> _weekListItems;
         private string _selectedClass;
         private DateTime _selectedDate;
@@ -50,7 +49,6 @@ namespace LAS_Interface.UI
 
             SelectedDate = DateTime.Now;
             ClassItems = GeneralUtil.GetClasses ();
-            SelectedClass = ClassItems.FirstOrDefault ();
             AllTimeTables = TimeTableUtil.GetAllEmptyTimeTables (ClassItems);
             AllRegisters = DataObjectsUtil.GenerateAllEmptyClassDataObjectses (ClassItems, WeekListItems);
 
@@ -280,12 +278,18 @@ namespace LAS_Interface.UI
             }
         }
 
+        /// <summary>
+        /// Is called whenever the user changed the timeTable
+        /// </summary>
         public void TimeTableChanged (object sender, EventArgs e)
         {
             TimeTableOfCurrentClass.TimeTableRows = TimeTableForView;
             TimeTableOfCurrentClass = TimeTableOfCurrentClass;
         }
 
+        /// <summary>
+        /// Is called whenever the teachers list changed
+        /// </summary>
         public void TeachersListChanged (object sender, EventArgs e) //ONLY call those when the USER changed something
         {
             TeachersViews = TeachersViews;
@@ -303,6 +307,9 @@ namespace LAS_Interface.UI
             }
         }
 
+        /// <summary>
+        /// Is called whenever the students list changed
+        /// </summary>
         public void StudentsListChanged (object sender, EventArgs e)
         {
             StudentsViews = StudentsViews;
@@ -418,6 +425,8 @@ namespace LAS_Interface.UI
             set
             {
                 _weekListItems = value;
+                if (!value.Contains(CurrentWeek))
+                    CurrentWeek = value.FirstOrDefault();
                 OnPropertyChanged (nameof (WeekListItems));
             }
         }
@@ -461,6 +470,8 @@ namespace LAS_Interface.UI
             set
             {
                 _classItems = value;
+                if (!value.Contains(SelectedClass))
+                    SelectedClass = value.FirstOrDefault();
                 OnPropertyChanged (nameof (ClassItems));
             }
         }
