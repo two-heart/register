@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -30,5 +31,8 @@ namespace LAS_Interface.UI
         /// </summary>
         private void ClassLabel_OnMouseDoubleClick (object sender, MouseButtonEventArgs e)
                     => ((MainViewModel) DataContext).OnMouseDoubleClick (sender, e, nameof (ClassLabel));
+
+        private void DataGrid_OnCurrentCellChanged(object sender, EventArgs e)
+            => ((MainViewModel) DataContext).TimeTableChanged(sender, e);
     }
 }

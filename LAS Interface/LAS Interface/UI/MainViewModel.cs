@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -31,6 +32,9 @@ namespace LAS_Interface.UI
         private TeachersView _selectedTeacher;
         private List<Student> _students;
         private List<Teacher> _teachers;
+        private List<TimeTable> _allTimeTables;
+        private List<TimeTableRow> _timeTableForView;
+        private TimeTable _timeTableOfCurrentClass;
 
         /// <summary>
         /// Initializes the MainViewModel - the ViewModel to the MainWindow - so literally everything
@@ -43,6 +47,7 @@ namespace LAS_Interface.UI
 
             SelectedDate = DateTime.Now;
             ClassItems = GeneralUtil.GetClasses ();
+            SelectedClass = ClassItems.FirstOrDefault ();
             AllRegisters = DataObjectsUtil.GenerateAllEmptyClassDataObjectses (ClassItems, WeekListItems);
             AllTimeTables = TimeTableUtil.GetAllEmptyTimeTables (ClassItems);
 
@@ -54,8 +59,60 @@ namespace LAS_Interface.UI
 
             Teachers = new List<Teacher> ();
             Students = new List<Student> ();
-            SelectedClass = ClassItems.FirstOrDefault ();
         }
+
+        #region External Variables -> Those four vars & the two other vars (SelectedDate & ClassItems) should be saved/loaded to/from the Data Source
+
+        /// <summary>
+        /// Contains all the registers (for every week) from all the classes
+        /// </summary>
+        /// <value>registers</value>
+        public List<ClassRegister> AllRegisters { get; set; }
+        /// <summary>
+        /// Contains all the TimeTables for every class
+        /// </summary>
+        /// <value>The timeTables</value>
+        public List<TimeTable> AllTimeTables
+        {
+            get { return _allTimeTables; }
+            set
+            {
+                _allTimeTables = value;
+                TimeTableOfCurrentClass = value.FirstOrDefault (table => table.Class.Equals (SelectedClass));
+            }
+        }
+        /// <summary>
+        /// All the teachers for the teacherslist. Gets updated by adding/deleting a student
+        /// </summary>
+        /// <value>the teachers</value>
+        public List<Teacher> Teachers
+        {
+            get { return _teachers; }
+            set
+            {
+                if ((value != null) && (value.Count > 0))
+                    foreach (var teacher in value.ToList ())
+                        if (teacher.TeacherProperties?.Count <= 0)
+                            value.Remove (teacher);
+                _teachers = value;
+                OnPropertyChanged (nameof (TeachersViews));
+            }
+        }
+        /// <summary>
+        /// All the students for the studentslist. Gets updated by adding/deleting a student
+        /// </summary>
+        /// <value>the students</value>
+        public List<Student> Students
+        {
+            get { return _students; }
+            set
+            {
+                _students = value;
+                OnPropertyChanged (nameof (StudentsViews));
+            }
+        }
+
+        #endregion //Don't forget the SelectedDate & the ClassItems!
 
         /// <summary>
         /// The register (With all the weeks) of the selected Class
@@ -96,12 +153,26 @@ namespace LAS_Interface.UI
         /// <value>The timetable</value>
         public TimeTable TimeTableOfCurrentClass
         {
-            get { return AllTimeTables.FirstOrDefault (timeTable => timeTable.Class.Equals (SelectedClass)); }
+            get { return _timeTableOfCurrentClass; }
             set
             {
-                for (var i = 0; i < AllTimeTables.Count; i++)
-                    if (AllTimeTables[i].Class.Equals (SelectedClass))
-                        AllTimeTables[i] = value;
+                _timeTableOfCurrentClass = value;
+                if(AllTimeTables == null)
+                    return;
+                for (var i = 0; i < -_allTimeTables.Count; i++)
+                {
+                    if (!_allTimeTables[i].Class.Equals(SelectedClass)) continue;
+                    var newDifferentTimeTable =
+                        value.TimeTableRows.Where ((row, count) => !row.Time.Equals(AllTimeTables[i].TimeTableRows[count].Time)).ToList ();
+                    if (newDifferentTimeTable.Count > 0)
+                    {
+                        var newTimeList = newDifferentTimeTable.Select(row => row.Time).ToList();
+                        AllTimeTables = TimeTableUtil.GetTimeTablesWithUpdatedTime(AllTimeTables, newTimeList);
+                    }
+                    AllTimeTables[i] = value;
+                }
+                TimeTableForView = TimeTableOfCurrentClass.TimeTableRows;
+                OnPropertyChanged (nameof(TimeTableForView));
             }
         }
 
@@ -215,51 +286,12 @@ namespace LAS_Interface.UI
         protected void OnPropertyChanged (string name)
                     => PropertyChanged?.Invoke (this, new PropertyChangedEventArgs (name));
 
-        #region External Variables -> Those four vars & the two other vars (SelectedDate & ClassItems) should be saved/loaded to/from the Data Source
-
-        /// <summary>
-        /// Contains all the registers (for every week) from all the classes
-        /// </summary>
-        /// <value>registers</value>
-        public List<ClassRegister> AllRegisters { get; set; }
-        /// <summary>
-        /// Contains all the TimeTables for every class
-        /// </summary>
-        /// <value>The timeTables</value>
-        public List<TimeTable> AllTimeTables { get; set; }
-        /// <summary>
-        /// All the teachers for the teacherslist. Gets updated by adding/deleting a student
-        /// </summary>
-        /// <value>the teachers</value>
-        public List<Teacher> Teachers
+        public void TimeTableChanged(object sender, EventArgs e)
         {
-            get { return _teachers; }
-            set
-            {
-                if ((value != null) && (value.Count > 0))
-                    foreach (var teacher in value.ToList ())
-                        if (teacher.TeacherProperties?.Count <= 0)
-                            value.Remove (teacher);
-                _teachers = value;
-                OnPropertyChanged (nameof (TeachersViews));
-            }
+            TimeTableOfCurrentClass.TimeTableRows = TimeTableForView;
+            TimeTableOfCurrentClass = TimeTableOfCurrentClass;
         }
-        /// <summary>
-        /// All the students for the studentslist. Gets updated by adding/deleting a student
-        /// </summary>
-        /// <value>the students</value>
-        public List<Student> Students
-        {
-            get { return _students; }
-            set
-            {
-                _students = value;
-                OnPropertyChanged (nameof (StudentsViews));
-            }
-        }
-
-        #endregion //Don't forget the SelectedDate & the ClassItems!
-
+        
         #region BoundVariables
 
         public List<DataObject> RegisterDataObjectsMonday
@@ -364,19 +396,21 @@ namespace LAS_Interface.UI
                 OnPropertyChanged (nameof (ClassItems));
             }
         }
+
         /// <summary>
         /// The view for the TimeTable - the thing the user sees/edits directly. It's just a table.
         /// </summary>
         /// <value>The TimeTable</value>
         public List<TimeTableRow> TimeTableForView
         {
-            get { return TimeTableOfCurrentClass.TimeTableRows; }
+            get { return _timeTableForView; }
             set
             {
-                TimeTableOfCurrentClass.TimeTableRows = value;
-                OnPropertyChanged (nameof (TimeTableForView));
+                _timeTableForView = value;
+                OnPropertyChanged(nameof(TimeTableForView));
             }
         }
+
         /// <summary>
         /// The equivalent view for the teachers. Contains things like name/class teacher/...
         /// </summary>

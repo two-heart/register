@@ -118,7 +118,8 @@
             </TabItem>
             <TabItem Header="TimeTable">
                 <DataGrid AutoGenerateColumns="True"
-                          ItemsSource="{Binding TimeTableForView, UpdateSourceTrigger=PropertyChanged}" />
+                          ItemsSource="{Binding TimeTableForView, UpdateSourceTrigger=PropertyChanged}" 
+                          CurrentCellChanged="DataGrid_OnCurrentCellChanged"/>
             </TabItem>
             <TabItem Header="Lists">
                 <Grid>
