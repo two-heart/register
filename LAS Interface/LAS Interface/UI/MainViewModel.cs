@@ -57,6 +57,7 @@ namespace LAS_Interface.UI
             AddTeacherCommand = new DelegateCommand (AddTeacher);
             DeleteStudentCommand = new DelegateCommand (DeleteStudent);
             DeleteTeacherCommand = new DelegateCommand (DeleteTeacher);
+            ClassButtonClickCommand = new DelegateCommand(ClassButtonClick);
         }
 
         #region External Variables -> Those four vars & the two other vars (SelectedDate & ClassItems) should be saved/loaded to/from the Data Source
@@ -261,22 +262,16 @@ namespace LAS_Interface.UI
             Teachers = temp;
         }
 
+        public void ClassButtonClick (object param)
+        {
+            var editClassesPopUpWindow = new EditClassesPopUpWindow (this);
+            editClassesPopUpWindow.InitializeComponent ();
+            editClassesPopUpWindow.ShowDialog ();
+        }
+
         #endregion
 
         #region External Called Methods
-
-        /// <summary>
-        /// This method can be used whenever the user doubleclicks an item in the MainWindow - which item the user clicked on is specified in the name parameter
-        /// </summary>
-        public void OnMouseDoubleClick (object sender, MouseButtonEventArgs e, string clickedItem)
-        {
-            if (clickedItem.Equals (nameof (_mainWindow.ClassLabel)))
-            {
-                var editClassesPopUpWindow = new EditClassesPopUpWindow (this);
-                editClassesPopUpWindow.InitializeComponent ();
-                editClassesPopUpWindow.ShowDialog ();
-            }
-        }
 
         /// <summary>
         /// Is called whenever the user changed the timeTable
@@ -425,8 +420,8 @@ namespace LAS_Interface.UI
             set
             {
                 _weekListItems = value;
-                if (!value.Contains(CurrentWeek))
-                    CurrentWeek = value.FirstOrDefault();
+                if (!value.Contains (CurrentWeek))
+                    CurrentWeek = value.FirstOrDefault ();
                 OnPropertyChanged (nameof (WeekListItems));
             }
         }
@@ -470,8 +465,8 @@ namespace LAS_Interface.UI
             set
             {
                 _classItems = value;
-                if (!value.Contains(SelectedClass))
-                    SelectedClass = value.FirstOrDefault();
+                if (!value.Contains (SelectedClass))
+                    SelectedClass = value.FirstOrDefault ();
                 OnPropertyChanged (nameof (ClassItems));
             }
         }
@@ -588,6 +583,7 @@ namespace LAS_Interface.UI
         public ICommand AddTeacherCommand { get; set; }
         public ICommand DeleteStudentCommand { get; set; }
         public ICommand DeleteTeacherCommand { get; set; }
+        public ICommand ClassButtonClickCommand { get; set; }
 
         #endregion
     }

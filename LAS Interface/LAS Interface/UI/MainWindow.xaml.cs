@@ -27,12 +27,6 @@ namespace LAS_Interface.UI
                     => e.Cancel = e.PropertyName == "Class";
 
         /// <summary>
-        /// This method is called when the class-label is clicked and calls the OnDoubleClick Method from the MainViewModel
-        /// </summary>
-        private void ClassLabel_OnMouseDoubleClick (object sender, MouseButtonEventArgs e)
-                    => ((MainViewModel) DataContext).OnMouseDoubleClick (sender, e, nameof (ClassLabel));
-
-        /// <summary>
         /// Is called whenever a cell of the timeTable changed
         /// </summary>
         private void DataGrid_OnCurrentCellChanged (object sender, EventArgs e)

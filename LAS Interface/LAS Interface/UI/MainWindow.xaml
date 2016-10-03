@@ -8,180 +8,183 @@
         Title="LAS">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="5"/>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="5"/>
             <RowDefinition Height="*" />
+            <RowDefinition Height="5"/>
         </Grid.RowDefinitions>
-        <Grid Row="0">
+        <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="5" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="5" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="5" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="5" />
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="5" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <Grid Grid.Column="0">
-                <Label Content="Class:"
-                       BorderThickness="1"
-                       BorderBrush="LightGray" HorizontalAlignment="Left" Width="42"
-                       MouseDoubleClick="ClassLabel_OnMouseDoubleClick"
-                       Name="ClassLabel" />
+            <Grid Grid.Column="1">
+                <Button Content=" Class: "
+                        Command="{Binding ClassButtonClickCommand}"
+                        BorderBrush="#FFACACAC"/>
             </Grid>
-            <GridSplitter Grid.Column="1"
-                          Width="5"
-                          Visibility="Hidden" />
-            <Grid Grid.Column="2">
+            <Grid Grid.Column="3">
                 <ComboBox ItemsSource="{Binding ClassItems, UpdateSourceTrigger=PropertyChanged}"
-                          SelectedItem="{Binding SelectedClass, UpdateSourceTrigger=PropertyChanged}" Width="50" />
+                          SelectedItem="{Binding SelectedClass, UpdateSourceTrigger=PropertyChanged}" 
+                          Width="50" />
             </Grid>
-            <GridSplitter Grid.Column="3"
-                          Width="5"
-                          Visibility="Hidden" />
-            <Grid Grid.Column="4">
+            <Grid Grid.Column="5">
                 <Label Content="Start of school year:"
                        BorderThickness="1"
-                       BorderBrush="LightGray" />
+                       BorderBrush="#FFACACAC" 
+                       Background="#FFDDDDDD"/>
             </Grid>
-            <GridSplitter Grid.Column="5"
-                          Width="5"
-                          Visibility="Hidden" />
-            <Grid Grid.Column="6"
-                  Width="110">
-                <DatePicker SelectedDate="{Binding SelectedDate, UpdateSourceTrigger=PropertyChanged}" />
+            <Grid Grid.Column="7"
+                  Width="110" Margin="0,0,1,0">
+                <DatePicker SelectedDate="{Binding SelectedDate, UpdateSourceTrigger=PropertyChanged}" 
+                            BorderBrush="#FFACACAC"/>
+
             </Grid>
-            <GridSplitter Grid.Column="7"
-                          Width="5"
-                          Visibility="Hidden" />
-            <Grid Grid.Column="8">
+            <Grid Grid.Column="9">
                 <Button Command="{Binding FillRegisterButtonClickCommand}"
-                        Content="Auto-Fill Register" />
+                        Content=" Auto-Fill Register " 
+                        BorderBrush="#FFACACAC"/>
             </Grid>
         </Grid>
-        <TabControl x:Name="TabControl"
-                    Grid.Row="1">
-            <TabItem Header="Register" Height="22" VerticalAlignment="Top">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="200" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <ListView x:Name="ListView"
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="5"/>
+            </Grid.ColumnDefinitions>
+            <TabControl x:Name="TabControl"
+                        Grid.Column="1">
+                <TabItem Header="Register" Height="22" VerticalAlignment="Top">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200" />
+                            <ColumnDefinition Width="17*" />
+                            <ColumnDefinition Width="260*"/>
+                        </Grid.ColumnDefinitions>
+                        <ListView x:Name="ListView"
                               ItemsSource="{Binding WeekListItems, UpdateSourceTrigger=PropertyChanged}"
                               Grid.Column="0"
                               SelectedItem="{Binding CurrentWeek, UpdateSourceTrigger=PropertyChanged}" />
-                    <ScrollViewer HorizontalScrollBarVisibility="Auto"
-                                  Grid.Column="1">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <Label Content="Monday"
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                  Grid.Column="1" Grid.ColumnSpan="2">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Label Content="Monday"
                                    Grid.Row="0" />
-                            <DataGrid AutoGenerateColumns="True"
+                                <DataGrid AutoGenerateColumns="True"
                                       Grid.Row="1"
                                       ItemsSource="{Binding RegisterDataObjectsMonday, UpdateSourceTrigger=PropertyChanged}" />
-                            <Label Content="Tuesday"
+                                <Label Content="Tuesday"
                                    Grid.Row="2" />
-                            <DataGrid AutoGenerateColumns="True"
+                                <DataGrid AutoGenerateColumns="True"
                                       Grid.Row="3"
                                       ItemsSource="{Binding RegisterDataObjectsTuesday, UpdateSourceTrigger=PropertyChanged}" />
-                            <Label Content="Wednesday"
+                                <Label Content="Wednesday"
                                    Grid.Row="4" Margin="0,14,0,0" Grid.RowSpan="2" />
-                            <DataGrid AutoGenerateColumns="True"
+                                <DataGrid AutoGenerateColumns="True"
                                       Grid.Row="5"
                                       ItemsSource="{Binding RegisterDataObjectsWednesday, UpdateSourceTrigger=PropertyChanged}" />
-                            <Label Content="Thursday"
+                                <Label Content="Thursday"
                                    Grid.Row="6" />
-                            <DataGrid AutoGenerateColumns="True"
+                                <DataGrid AutoGenerateColumns="True"
                                       Grid.Row="7"
                                       ItemsSource="{Binding RegisterDataObjectsThursday, UpdateSourceTrigger=PropertyChanged}" />
-                            <Label Content="Friday"
+                                <Label Content="Friday"
                                    Grid.Row="8" />
-                            <DataGrid AutoGenerateColumns="True"
+                                <DataGrid AutoGenerateColumns="True"
                                       Grid.Row="9"
                                       ItemsSource="{Binding RegisterDataObjectsFriday, UpdateSourceTrigger=PropertyChanged}" />
-                        </Grid>
-                    </ScrollViewer>
-                </Grid>
-            </TabItem>
-            <TabItem Header="TimeTable">
-                <DataGrid AutoGenerateColumns="True"
+                            </Grid>
+                        </ScrollViewer>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="TimeTable">
+                    <DataGrid AutoGenerateColumns="True"
                           ItemsSource="{Binding TimeTableForView, UpdateSourceTrigger=PropertyChanged}" 
                           CurrentCellChanged="DataGrid_OnCurrentCellChanged"/>
-            </TabItem>
-            <TabItem Header="Lists">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid Grid.Column="0">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-                        <Label Grid.Row="0"
+                </TabItem>
+                <TabItem Header="Lists">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Label Grid.Row="0"
                                Content="Teacher" />
-                        <ScrollViewer Grid.Row="1"
+                            <ScrollViewer Grid.Row="1"
                                       HorizontalScrollBarVisibility="Auto">
-                            <DataGrid ItemsSource="{Binding TeachersViews, UpdateSourceTrigger=PropertyChanged}"
+                                <DataGrid ItemsSource="{Binding TeachersViews, UpdateSourceTrigger=PropertyChanged}"
                                       AutoGenerateColumns="True"
                                       Name="TeacherDataGrid"
                                       AutoGeneratingColumn="TeacherDataGrid_AutoGeneratingColumn"
                                       SelectedItem="{Binding SelectedTeacher, UpdateSourceTrigger=PropertyChanged}"
                                       CurrentCellChanged="TeacherDataGrid_OnCurrentCellChanged">
-                                <DataGrid.ContextMenu>
-                                    <ContextMenu>
-                                        <MenuItem Command="{Binding AddTeacherCommand}"
+                                    <DataGrid.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Command="{Binding AddTeacherCommand}"
                                                   Header="Add Teacher" />
-                                        <MenuItem Header="Delete Teacher"
+                                            <MenuItem Header="Delete Teacher"
                                                   Visibility="{Binding ContextMenuDeleteTeacherItemVisibility, UpdateSourceTrigger=PropertyChanged}"
                                                   Command="{Binding DeleteTeacherCommand}" />
-                                    </ContextMenu>
-                                </DataGrid.ContextMenu>
-                            </DataGrid>
-                        </ScrollViewer>
-                    </Grid>
-                    <Grid Grid.Column="1">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-                        <Label Grid.Row="0"
+                                        </ContextMenu>
+                                    </DataGrid.ContextMenu>
+                                </DataGrid>
+                            </ScrollViewer>
+                        </Grid>
+                        <Grid Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Label Grid.Row="0"
                                Content="Students" />
-                        <ScrollViewer Grid.Row="1"
+                            <ScrollViewer Grid.Row="1"
                                       HorizontalScrollBarVisibility="Auto">
-                            <DataGrid ItemsSource="{Binding StudentsViews, UpdateSourceTrigger=PropertyChanged}"
+                                <DataGrid ItemsSource="{Binding StudentsViews, UpdateSourceTrigger=PropertyChanged}"
                                       AutoGenerateColumns="True"
                                       Name="StudentsDataGrid"
                                       SelectedItem="{Binding SelectedStudent, UpdateSourceTrigger=PropertyChanged}"
                                       CurrentCellChanged="StudentsDataGrid_OnCurrentCellChanged">
-                                <DataGrid.ContextMenu>
-                                    <ContextMenu>
-                                        <MenuItem Command="{Binding AddStudentCommand}"
+                                    <DataGrid.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Command="{Binding AddStudentCommand}"
                                                   Header="Add Student" />
-                                        <MenuItem Header="Delete Student"
+                                            <MenuItem Header="Delete Student"
                                                   Command="{Binding DeleteStudentCommand}"
                                                   Visibility="{Binding ContextMenuDeleteStudentItemVisibility, UpdateSourceTrigger=PropertyChanged}" />
-                                    </ContextMenu>
-                                </DataGrid.ContextMenu>
-                            </DataGrid>
-                        </ScrollViewer>
+                                        </ContextMenu>
+                                    </DataGrid.ContextMenu>
+                                </DataGrid>
+                            </ScrollViewer>
+                        </Grid>
                     </Grid>
-                </Grid>
-            </TabItem>
-        </TabControl>
+                </TabItem>
+            </TabControl>
+        </Grid>
     </Grid>
 </Window>
