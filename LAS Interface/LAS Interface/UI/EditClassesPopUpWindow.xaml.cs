@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Input;
 
 namespace LAS_Interface.UI
 {
@@ -15,6 +16,11 @@ namespace LAS_Interface.UI
         {
             InitializeComponent ();
             DataContext = new EditClassesViewModel (this, mvm);
+        }
+
+        private void Window_KeyUp (object sender, KeyEventArgs e)
+        {
+
         }
     }
 }

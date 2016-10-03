@@ -83,6 +83,7 @@
     <Compile Include="Types\Humans\Teacher\Teacher.cs" />
     <Compile Include="Types\Humans\Teacher\TeacherPropertiesForSpecificClass.cs" />
     <Compile Include="Types\Humans\Teacher\TeachersView.cs" />
+    <Compile Include="Types\mstring.cs" />
     <Compile Include="Types\TimeTable.cs" />
     <Compile Include="Types\TimeTableRow.cs" />
     <Compile Include="Types\WeekDataObjects.cs" />

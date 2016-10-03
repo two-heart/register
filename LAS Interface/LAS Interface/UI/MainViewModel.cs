@@ -176,7 +176,7 @@ namespace LAS_Interface.UI
             set
             {
                 _timeTableOfCurrentClass = value;
-                /*if (AllTimeTables == null) //Not sure, wether I'll need this one time, but don't want to delete it forever.
+                /*if (AllTimeTables == null) //Not sure, wether I'll need this one time, but don't want to dele
                     return;
                 for (var i = 0; i < -_allTimeTables.Count; i++)
                 {
