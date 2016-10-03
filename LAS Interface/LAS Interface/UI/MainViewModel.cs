@@ -50,8 +50,8 @@ namespace LAS_Interface.UI
 
             SelectedDate = DateTime.Now;
             ClassItems = GeneralUtil.GetClasses ();
-            AllTimeTables = TimeTableUtil.GetAllEmptyTimeTables (ClassItems);
             SelectedClass = ClassItems.FirstOrDefault ();
+            AllTimeTables = TimeTableUtil.GetAllEmptyTimeTables (ClassItems);
             AllRegisters = DataObjectsUtil.GenerateAllEmptyClassDataObjectses (ClassItems, WeekListItems);
 
             FillRegisterButtonClickCommand = new DelegateCommand (FillRegisterButtonClick);
@@ -78,7 +78,9 @@ namespace LAS_Interface.UI
             set
             {
                 _allTimeTables = value;
-                TimeTableOfCurrentClass = value.FirstOrDefault (table => table.Class.Equals (SelectedClass));
+                if (value != null)
+                    TimeTableOfCurrentClass = value.FirstOrDefault (table => table.Class.Equals (SelectedClass));
+                OnPropertyChanged (nameof (TimeTableForView));
             }
         }
         /// <summary>
@@ -90,22 +92,22 @@ namespace LAS_Interface.UI
             get { return _teachers; }
             set
             {
-                if (value == null)
+                if (value == null || value.Count <= 0)
                 {
                     _teachers = value;
                     TeachersViews = null;
                     OnPropertyChanged (nameof (TeachersViews));
                     return;
                 }
-                if ((value.Count > 0))
-                    foreach (var teacher in value.ToList ())
-                        if (teacher.TeacherProperties?.Count <= 0)
-                            value.Remove (teacher);
+                foreach (var teacher in value.ToList ())
+                    if (teacher.TeacherProperties?.Count <= 0)
+                        value.Remove (teacher);
                 _teachers = value;
                 TeachersViews =
                     value.SelectMany (
                             teacher => teacher.TeachersViews.Where (view => view.Class.Equals (SelectedClass)).ToList ())
                         .ToList ();
+                ;
                 OnPropertyChanged (nameof (TeachersViews));
             }
         }
@@ -174,7 +176,7 @@ namespace LAS_Interface.UI
             set
             {
                 _timeTableOfCurrentClass = value;
-                if (AllTimeTables == null)
+                /*if (AllTimeTables == null) //Not sure, wether I'll need this one time, but don't want to delete it forever.
                     return;
                 for (var i = 0; i < -_allTimeTables.Count; i++)
                 {
@@ -188,7 +190,7 @@ namespace LAS_Interface.UI
                         AllTimeTables = TimeTableUtil.GetTimeTablesWithUpdatedTime (AllTimeTables, newTimeList);
                     }
                     AllTimeTables[i] = value;
-                }
+                }*/
                 TimeTableForView = TimeTableOfCurrentClass.TimeTableRows;
                 OnPropertyChanged (nameof (TimeTableForView));
             }
@@ -284,9 +286,33 @@ namespace LAS_Interface.UI
             TimeTableOfCurrentClass = TimeTableOfCurrentClass;
         }
 
-        public void TeachersListChanged (object sender, EventArgs e) => TeachersViews = TeachersViews;
+        public void TeachersListChanged (object sender, EventArgs e) //ONLY call those when the USER changed something
+        {
+            TeachersViews = TeachersViews;
+            for (var i = 0; i < Teachers.Count; i++)
+            {
+                Teachers[i].Name = TeachersViews[i].Name;
+                foreach (var t in Teachers[i].TeacherProperties)
+                {
+                    if (!t.Class.Equals (SelectedClass) || TeachersViews[i] == null)
+                        continue;
+                    if (TeachersViews[i].Subjects != null)
+                        t.Subjects = TeachersViews[i].Subjects.Split (',').ToList ();
+                    t.ClassTeacher = TeachersViews[i].ClassTeacher;
+                }
+            }
+        }
 
-        public void StudentsListChanged(object sender, EventArgs e) => StudentsViews = StudentsViews;
+        public void StudentsListChanged (object sender, EventArgs e)
+        {
+            StudentsViews = StudentsViews;
+            for (var i = 0; i < Students.Count; i++)
+                if (Students[i].Class.Equals (SelectedClass))
+                {
+                    Students[i].Name = StudentsViews[i].Name;
+                    Students[i].StudentsView.Name = StudentsViews[i].Name;
+                }
+        }
 
         #endregion
 
@@ -297,8 +323,11 @@ namespace LAS_Interface.UI
         /// </summary>
         public void PropertyChangedClass ()
         {
-            Students = Students;
+
             Teachers = Teachers;
+            Students = Students;
+            AllTimeTables = AllTimeTables;
+
             OnPropertyChanged (nameof (SelectedClass));
             OnPropertyChanged (nameof (RegisterOfCurrentWeek));
             OnPropertyChanged (nameof (RegisterDataObjectsMonday));
@@ -460,18 +489,6 @@ namespace LAS_Interface.UI
             set //Don't add TeachersViews - Always add Teachers!
             {
                 _teachersViews = value;
-                for (var i = 0; i < Teachers.Count; i++)
-                {
-                    Teachers[i].Name = value[i].Name;
-                    foreach (var t in Teachers[i].TeacherProperties)
-                    {
-                        if (!t.Class.Equals (SelectedClass) || value[i] == null)
-                            continue;
-                        if (value[i].Subjects != null)
-                            t.Subjects = value[i].Subjects.Split (',').ToList ();
-                        t.ClassTeacher = value[i].ClassTeacher;
-                    }
-                }
                 OnPropertyChanged (nameof (TeachersViews));
             }
         }
@@ -486,12 +503,6 @@ namespace LAS_Interface.UI
             set //see at TeachersView
             {
                 _studentsViews = value;
-                for (var i = 0; i < Students.Count; i++)
-                    if (Students[i].Class.Equals (SelectedClass))
-                    {
-                        Students[i].Name = value[i].Name;
-                        Students[i].StudentsView.Name = value[i].Name;
-                    }
                 OnPropertyChanged (nameof (StudentsViews));
             }
         }
