@@ -15,3 +15,19 @@ C:\Users\Timo\Source\Repos\register\LAS Interface\LAS Interface\obj\Debug\LAS_In
 C:\Users\Timo\Source\Repos\register\LAS Interface\LAS Interface\obj\Debug\LAS Interface.csproj.GenerateResource.Cache
 C:\Users\Timo\Source\Repos\register\LAS Interface\LAS Interface\obj\Debug\LAS Interface.exe
 C:\Users\Timo\Source\Repos\register\LAS Interface\LAS Interface\obj\Debug\LAS Interface.pdb
+C:\Users\Liam\Documents\register\LAS Interface\LAS Interface\bin\Debug\LAS Interface.exe.config
+C:\Users\Liam\Documents\register\LAS Interface\LAS Interface\bin\Debug\LAS Interface.exe
+C:\Users\Liam\Documents\register\LAS Interface\LAS Interface\bin\Debug\LAS Interface.pdb
+C:\Users\Liam\Documents\register\LAS Interface\LAS Interface\obj\Debug\LAS Interface.csprojResolveAssemblyReference.cache
+C:\Users\Liam\Documents\register\LAS Interface\LAS Interface\obj\Debug\UI\EditClassesPopUpWindow.g.cs
+C:\Users\Liam\Documents\register\LAS Interface\LAS Interface\obj\Debug\UI\MainWindow.g.cs
+C:\Users\Liam\Documents\register\LAS Interface\LAS Interface\obj\Debug\App.g.cs
+C:\Users\Liam\Documents\register\LAS Interface\LAS Interface\obj\Debug\LAS Interface_MarkupCompile.cache
+C:\Users\Liam\Documents\register\LAS Interface\LAS Interface\obj\Debug\LAS Interface_MarkupCompile.lref
+C:\Users\Liam\Documents\register\LAS Interface\LAS Interface\obj\Debug\UI\EditClassesPopUpWindow.baml
+C:\Users\Liam\Documents\register\LAS Interface\LAS Interface\obj\Debug\UI\MainWindow.baml
+C:\Users\Liam\Documents\register\LAS Interface\LAS Interface\obj\Debug\LAS Interface.g.resources
+C:\Users\Liam\Documents\register\LAS Interface\LAS Interface\obj\Debug\LAS_Interface.Properties.Resources.resources
+C:\Users\Liam\Documents\register\LAS Interface\LAS Interface\obj\Debug\LAS Interface.csproj.GenerateResource.Cache
+C:\Users\Liam\Documents\register\LAS Interface\LAS Interface\obj\Debug\LAS Interface.exe
+C:\Users\Liam\Documents\register\LAS Interface\LAS Interface\obj\Debug\LAS Interface.pdb

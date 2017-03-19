@@ -42,5 +42,20 @@ namespace LAS_Interface.UI
         /// Is called whenever the students List is changed
         /// </summary>
         private void StudentsDataGrid_OnCurrentCellChanged (object sender, EventArgs e) => ((MainViewModel) DataContext).StudentsListChanged (sender, e);
+
+        private void StudentsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void TeacherDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }

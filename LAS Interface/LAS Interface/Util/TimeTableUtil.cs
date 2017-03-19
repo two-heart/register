@@ -13,8 +13,11 @@ namespace LAS_Interface.Util
         public static TimeTable GetEmptyTimeTable (string cclass)
         {
             var rows = new List<TimeTableRow> ();
-            for (var i = 0; i < 9; i++)
+            for (var i = 1; i <= 9; i++) //Number of lessons in timetable
+            {
                 rows.Add (new TimeTableRow (i.ToString (), "", "", "", "", ""));
+            }
+
             return new TimeTable (rows, cclass);
         }
 
